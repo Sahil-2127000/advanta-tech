@@ -20,7 +20,7 @@ export default function Hero() {
   const fadeOut = useTransform(scrollYProgress, [0, 0.75], [1, 0])
 
   return (
-    <section ref={ref} className="bg-grid relative isolate flex min-h-[680px] h-svh items-end overflow-hidden">
+    <section ref={ref} className="bg-grid relative isolate flex min-h-svh items-end overflow-hidden pt-28 sm:pt-32">
       {/* 3D core */}
       <motion.div
         className="absolute inset-x-0 top-[6%] -z-10 h-[62%] md:inset-y-0 md:left-[34%] md:right-[-6%] md:top-0 md:h-auto"
@@ -47,7 +47,7 @@ export default function Hero() {
           delay={0.35}
           stagger={0.08}
           text={'Engineered\n*growth.*\nAssured\n~quality.~'}
-          className="display text-[length:var(--text-hero)]"
+          className="display text-[clamp(3rem,min(9vw,13svh),9rem)]"
         />
 
         <div className="mt-8 grid gap-8 sm:mt-10 lg:grid-cols-12 lg:items-end">
