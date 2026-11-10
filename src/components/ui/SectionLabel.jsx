@@ -5,7 +5,7 @@ import { easeOut, viewportOnce } from '../../lib/motion'
 export default function SectionLabel({ index, children, className = '' }) {
   return (
     <div className={`label flex items-center gap-4 text-mute ${className}`}>
-      {index && <span className="text-volt">{index}</span>}
+      {index && <span className="text-accent">{index}</span>}
       <motion.span
         aria-hidden
         className="h-px w-10 origin-left bg-current sm:w-16"

@@ -42,10 +42,10 @@ export default function Contact() {
         <ul className="container-x grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {channels.map((c, i) => {
             const inner = (
-              <div className="relative flex h-full flex-col border border-line bg-coal p-7 transition-colors duration-500 [transform-style:preserve-3d] group-hover:border-volt/50">
+              <div className="relative flex h-full flex-col rounded-2xl border border-line bg-coal p-7 transition-colors duration-500 [transform-style:preserve-3d] group-hover:border-accent/50">
                 <span className="flex items-center justify-between" style={{ transform: 'translateZ(40px)' }}>
-                  <span className="grid h-11 w-11 place-items-center border border-volt/40 text-volt"><c.icon className="h-5 w-5" aria-hidden /></span>
-                  {c.href && <ArrowUpRight className="h-5 w-5 text-mute transition-all duration-500 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-volt" aria-hidden />}
+                  <span className="grid h-11 w-11 place-items-center rounded-xl border border-accent/40 text-accent"><c.icon className="h-5 w-5" aria-hidden /></span>
+                  {c.href && <ArrowUpRight className="h-5 w-5 text-mute transition-all duration-500 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-accent" aria-hidden />}
                 </span>
                 <span className="label mt-10 block text-mute" style={{ transform: 'translateZ(20px)' }}>{c.label}</span>
                 <span className="mt-2 block break-words text-bone" style={{ transform: 'translateZ(20px)' }}>{c.value}</span>
@@ -72,18 +72,18 @@ export default function Contact() {
             <ol className="mt-12 space-y-5 border-t border-line pt-8">
               {['We reply within one working day', 'Free 30-minute discovery call', 'Written proposal with scope and price'].map((t, i) => (
                 <li key={t} className="flex items-baseline gap-4">
-                  <span className="label text-volt">0{i + 1}</span>
+                  <span className="label text-accent">0{i + 1}</span>
                   <span className="text-bone/80">{t}</span>
                 </li>
               ))}
             </ol>
             <div className="mt-12 border-t border-line pt-8">
-              <p className="label mb-6 flex items-center gap-2 text-mute"><Clock className="h-4 w-4 text-volt" aria-hidden /> Office hours</p>
+              <p className="label mb-6 flex items-center gap-2 text-mute"><Clock className="h-4 w-4 text-accent" aria-hidden /> Office hours</p>
               <dl className="space-y-3">
                 {site.hours.map((h) => (
                   <div key={h.days} className="flex items-baseline justify-between gap-4 border-b border-line/60 pb-3">
                     <dt className="text-bone/70">{h.days}</dt>
-                    <dd className="display text-xl tracking-wide">{h.time}</dd>
+                    <dd className="display text-xl">{h.time}</dd>
                   </div>
                 ))}
               </dl>

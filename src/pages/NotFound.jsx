@@ -18,7 +18,7 @@ export default function NotFound() {
         404
       </motion.p>
       <div className="container-x relative">
-        <p className="label mb-6 text-volt">Error 404 — test failed</p>
+        <p className="label mb-6 text-accent">Error 404 — test failed</p>
         <RevealText as="h1" onMount text={'This page\n*didn’t pass QA.*'} className="display text-[length:var(--text-hero)]" />
         <p className="mt-8 max-w-md text-lg text-bone/70">The link may be broken or the page has moved. Even our 404 is tested — head back and try again.</p>
         <div className="mt-10 flex flex-col gap-3 sm:flex-row">

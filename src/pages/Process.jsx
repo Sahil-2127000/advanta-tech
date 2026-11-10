@@ -34,11 +34,11 @@ export default function Process() {
           <div className="mt-12 grid gap-px border border-line bg-line md:grid-cols-2 lg:grid-cols-4">
             {process.map((p, i) => (
               <Reveal key={p.k} delay={i * 0.08} className="bg-ink p-8">
-                <span className="display text-outline-volt text-7xl leading-none">{p.k}</span>
+                <span className="display text-outline-accent text-7xl leading-none">{p.k}</span>
                 <h3 className="display mt-6 text-3xl">{p.title}</h3>
                 <ul className="mt-6 space-y-3">
                   {p.points.map((pt) => (
-                    <li key={pt} className="flex gap-3 text-sm text-bone/75"><Check className="mt-0.5 h-4 w-4 shrink-0 text-volt" aria-hidden />{pt}</li>
+                    <li key={pt} className="flex gap-3 text-sm text-bone/75"><Check className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden />{pt}</li>
                   ))}
                 </ul>
               </Reveal>
@@ -55,8 +55,8 @@ export default function Process() {
             {models.map((m, i) => (
               <Reveal key={m.name} delay={i * 0.1} className="h-full">
                 <TiltCard max={7} className="group h-full">
-                  <article className={`relative flex h-full flex-col border p-8 [transform-style:preserve-3d] sm:p-10 ${m.featured ? 'border-volt/50 bg-graphite' : 'border-line bg-ink'}`}>
-                    {m.featured && <span className="absolute inset-x-0 top-0 h-1 bg-volt" />}
+                  <article className={`relative flex h-full flex-col border p-8 [transform-style:preserve-3d] sm:p-10 ${m.featured ? 'border-accent/50 bg-graphite' : 'border-line bg-ink'}`}>
+                    {m.featured && <span className="absolute inset-x-0 top-0 h-1 bg-accent" />}
                     <div style={{ transform: 'translateZ(40px)' }}>
                       <p className="label text-mute">{m.fit}</p>
                       <h3 className="display mt-3 text-5xl">{m.name}</h3>
@@ -64,7 +64,7 @@ export default function Process() {
                     </div>
                     <ul className="mt-8 space-y-3 border-t border-line pt-7" style={{ transform: 'translateZ(20px)' }}>
                       {m.points.map((pt) => (
-                        <li key={pt} className="flex gap-3 text-sm text-bone/85"><Check className="mt-0.5 h-4 w-4 shrink-0 text-volt" aria-hidden />{pt}</li>
+                        <li key={pt} className="flex gap-3 text-sm text-bone/85"><Check className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden />{pt}</li>
                       ))}
                     </ul>
                   </article>

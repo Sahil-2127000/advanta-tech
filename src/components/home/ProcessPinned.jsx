@@ -14,7 +14,7 @@ function Steps({ active }) {
       {process.map((s, i) => (
         <li key={s.k} className="border-b border-line py-6">
           <div className="flex items-baseline gap-5">
-            <span className={`label transition-colors ${active === i ? 'text-volt' : 'text-mute'}`}>{s.k}</span>
+            <span className={`label transition-colors ${active === i ? 'text-accent' : 'text-mute'}`}>{s.k}</span>
             <h3 className={`display text-4xl transition-colors duration-500 sm:text-5xl ${active === i || active === undefined ? 'text-bone' : 'text-bone/25'}`}>{s.title}</h3>
           </div>
           <motion.p

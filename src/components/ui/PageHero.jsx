@@ -15,7 +15,7 @@ export default function PageHero({ label, index = '00', title, intro, scene, chi
       )}
       <div className="container-x relative pb-14 sm:pb-20">
         <motion.div className="label mb-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-mute sm:mb-12" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 0.2 }}>
-          <span className="text-volt">[{index}]</span>
+          <span className="text-accent">[{index}]</span>
           <span>{label}</span>
           <span className="hidden h-px w-24 bg-line sm:block" />
           <span className="hidden sm:block">Advanta Tech</span>

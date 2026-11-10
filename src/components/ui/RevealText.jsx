@@ -2,9 +2,9 @@ import { motion } from 'motion/react'
 import { easeOut, viewportOnce } from '../../lib/motion'
 
 /**
- * Line-masked, word-staggered headline reveal.
- * `text` uses "\n" for deliberate line breaks and *asterisks* to mark volt-highlighted words.
- * `outline` words are wrapped in ~tildes~.
+ * Word-staggered headline reveal: each word rises out of a soft blur.
+ * `text` uses "\n" for deliberate line breaks, *asterisks* for logo-blue gradient words
+ * and ~tildes~ for quiet silver words.
  */
 export default function RevealText({
   text,
@@ -28,16 +28,16 @@ export default function RevealText({
         <span key={li} className="block" aria-hidden>
           {line.split(' ').map((raw, wi) => {
             const i = wordIndex++
-            const volt = raw.startsWith('*')
+            const accent = raw.startsWith('*')
             const outline = raw.startsWith('~')
             const word = raw.replace(/[*~]/g, '')
             return (
-              <span key={wi} className="inline-block overflow-hidden pb-[0.06em] align-top -mb-[0.06em]">
+              <span key={wi} className="inline-block align-top">
                 <motion.span
-                  className={`inline-block ${volt ? 'text-volt' : ''} ${outline ? 'text-outline' : ''}`}
+                  className={`inline-block pb-[0.08em] ${accent ? 'text-gradient' : ''} ${outline ? 'text-soft' : ''}`}
                   variants={{
-                    hidden: { y: '110%', rotate: 4 },
-                    show: { y: '0%', rotate: 0, transition: { duration: 1.05, ease: easeOut, delay: delay + i * stagger } },
+                    hidden: { opacity: 0, y: '0.45em', filter: 'blur(14px)' },
+                    show: { opacity: 1, y: '0em', filter: 'blur(0px)', transition: { duration: 1.2, ease: easeOut, delay: delay + i * stagger } },
                   }}
                 >
                   {word}

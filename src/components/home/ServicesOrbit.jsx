@@ -6,7 +6,7 @@ import ServiceCylinder from '../three/ServiceCylinder'
 export default function ServicesOrbit() {
   return (
     <section className="relative overflow-hidden border-t border-line bg-coal py-24 sm:py-32">
-      <div aria-hidden className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(198,255,0,0.07),transparent_60%)]" />
+      <div aria-hidden className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(77,141,255,0.07),transparent_60%)]" />
       <div className="container-x relative">
         <div className="text-center">
           <SectionLabel index="03" className="justify-center">Capabilities</SectionLabel>

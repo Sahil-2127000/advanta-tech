@@ -8,7 +8,7 @@ const CoreScene = lazy(() => import('./CoreScene'))
 function Fallback() {
   return (
     <div className="absolute inset-0 grid place-items-center" aria-hidden>
-      <div className="h-[46%] aspect-square rotate-45 border border-volt/20 bg-[radial-gradient(circle,rgba(198,255,0,0.18),transparent_65%)]" />
+      <div className="h-[46%] aspect-square rotate-45 border border-accent/20 bg-[radial-gradient(circle,rgba(77,141,255,0.18),transparent_65%)]" />
     </div>
   )
 }

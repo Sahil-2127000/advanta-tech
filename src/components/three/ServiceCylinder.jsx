@@ -17,10 +17,10 @@ function Ring({ items, rotate, y, accent }) {
         >
           <Link
             to={`/services/${s.slug}`}
-            className="group flex items-center gap-2.5 whitespace-nowrap border border-line bg-coal/90 px-4 py-2.5 transition-colors duration-300 hover:border-volt"
+            className="group flex items-center gap-2.5 whitespace-nowrap rounded-2xl border border-line bg-coal/90 px-4 py-2.5 transition-colors duration-300 hover:border-accent"
           >
-            <s.icon className={`h-4 w-4 ${accent ? 'text-volt' : 'text-bone'}`} aria-hidden />
-            <span className="display text-lg transition-colors group-hover:text-volt">{s.short}</span>
+            <s.icon className={`h-4 w-4 ${accent ? 'text-accent' : 'text-bone'}`} aria-hidden />
+            <span className="display text-lg transition-colors group-hover:text-accent">{s.short}</span>
           </Link>
         </li>
       ))}
@@ -44,7 +44,7 @@ export default function ServiceCylinder() {
           <li key={s.slug} className="bg-ink">
             <Link to={`/services/${s.slug}`} className="flex items-center justify-between gap-4 px-1 py-4">
               <span className="display text-2xl">{s.short}</span>
-              <span className={`label ${s.practice === 'growth' ? 'text-volt' : 'text-bone/60'}`}>{s.practice}</span>
+              <span className={`label ${s.practice === 'growth' ? 'text-accent' : 'text-bone/60'}`}>{s.practice}</span>
             </Link>
           </li>
         ))}
@@ -56,7 +56,7 @@ export default function ServiceCylinder() {
     <div ref={ref} className="relative h-[420px] [perspective:1400px]" aria-label="Service list">
       <Ring items={byPractice('growth')} rotate={growthRotate} y={-60} accent />
       <Ring items={byPractice('quality')} rotate={qualityRotate} y={70} />
-      <p className="label absolute left-0 top-[34%] text-volt">Growth ↻</p>
+      <p className="label absolute left-0 top-[34%] text-accent">Growth ↻</p>
       <p className="label absolute right-0 top-[64%] text-bone/60">Quality ↺</p>
     </div>
   )

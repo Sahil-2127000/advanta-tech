@@ -20,15 +20,15 @@ export default function IconCube({ icon: Icon, size = 220, accent = true }) {
         {faces.map((f, i) => (
           <div
             key={f}
-            className={`absolute inset-0 grid place-items-center border ${accent ? 'border-volt/40' : 'border-bone/30'} ${i === 0 ? 'bg-graphite/95' : 'bg-coal/90'}`}
+            className={`absolute inset-0 grid place-items-center border ${accent ? 'border-accent/40' : 'border-bone/30'} ${i === 0 ? 'bg-graphite/95' : 'bg-coal/90'}`}
             style={{ transform: `${f} translateZ(${half}px)` }}
           >
             <div className="bg-grid absolute inset-0" />
-            <Icon className={`relative h-1/3 w-1/3 ${accent ? 'text-volt' : 'text-bone'}`} strokeWidth={1.2} />
+            <Icon className={`relative h-1/3 w-1/3 ${accent ? 'text-accent' : 'text-bone'}`} strokeWidth={1.2} />
           </div>
         ))}
       </motion.div>
-      <div className={`-mt-6 h-6 rounded-[50%] blur-xl ${accent ? 'bg-volt/25' : 'bg-bone/15'}`} style={{ width: size * 1.1 }} />
+      <div className={`-mt-6 h-6 rounded-[50%] blur-xl ${accent ? 'bg-accent/25' : 'bg-bone/15'}`} style={{ width: size * 1.1 }} />
     </div>
   )
 }

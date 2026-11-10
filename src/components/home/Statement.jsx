@@ -9,7 +9,7 @@ const copy =
 function Word({ word, progress, range }) {
   const opacity = useTransform(progress, range, [0.14, 1])
   return (
-    <motion.span style={{ opacity }} className={`mr-[0.22em] inline-block ${word.startsWith('*') ? 'text-volt' : ''}`}>
+    <motion.span style={{ opacity }} className={`mr-[0.22em] inline-block ${word.startsWith('*') ? 'text-accent' : ''}`}>
       {word.replace(/\*/g, '')}
     </motion.span>
   )

@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
+import { MARK_DOT, MARK_H, MARK_SHAPES, MARK_W } from '../brand/logoMark'
 
-const VOLT = '#c6ff00'
-const BONE = '#ecebe6'
+const ACCENT = '#4d8dff'
+const BRAND = '#0455c0'
+const BONE = '#e9eff9'
 
 const shapes = {
   ico: <icosahedronGeometry args={[1.05, 0]} />,
@@ -11,8 +13,58 @@ const shapes = {
   dodeca: <dodecahedronGeometry args={[1.0, 0]} />,
 }
 
-/** Faceted dark-chrome crystal with a lime wireframe shell. */
+/** The Advanta mark, extruded with a bevel into glossy logo-blue chrome. The "i" dot floats on its own. */
+function LogoCore() {
+  const group = useRef(null)
+  const dot = useRef(null)
+  const size = 1.45 / MARK_H
+  const geometry = useMemo(() => {
+    const toShape = (pts) =>
+      new THREE.Shape(pts.map(([x, y]) => new THREE.Vector2((x - MARK_W / 2) * size, -(y - MARK_H / 2) * size)))
+    const depth = 0.34
+    const geo = new THREE.ExtrudeGeometry(MARK_SHAPES.map(toShape), {
+      depth,
+      bevelEnabled: true,
+      bevelThickness: 0.07,
+      bevelSize: 0.045,
+      bevelSegments: 5,
+    })
+    geo.translate(0, 0, -depth / 2)
+    geo.computeVertexNormals()
+    return geo
+  }, [size])
+  useEffect(() => () => geometry.dispose(), [geometry])
+  const [cx, cy, r] = MARK_DOT
+  const dotPos = [(cx - MARK_W / 2) * size, -(cy - MARK_H / 2) * size, 0]
+
+  useFrame((state) => {
+    const t = state.clock.elapsedTime
+    group.current.rotation.y = Math.sin(t * 0.35) * 0.5
+    group.current.rotation.x = Math.sin(t * 0.27) * 0.08
+    dot.current.position.y = dotPos[1] + Math.sin(t * 1.6) * 0.07
+    dot.current.position.z = Math.cos(t * 1.6) * 0.05
+  })
+
+  return (
+    <group ref={group}>
+      <mesh geometry={geometry}>
+        <meshPhysicalMaterial color="#3d7cff" metalness={0.35} roughness={0.2} clearcoat={1} clearcoatRoughness={0.05} envMapIntensity={2.4} emissive="#0455c0" emissiveIntensity={0.35} />
+      </mesh>
+      <mesh ref={dot} position={dotPos}>
+        <sphereGeometry args={[r * size * 1.05, 48, 48]} />
+        <meshPhysicalMaterial color="#ffffff" metalness={0.2} roughness={0.12} clearcoat={1} emissive={ACCENT} emissiveIntensity={0.25} envMapIntensity={1.4} />
+      </mesh>
+    </group>
+  )
+}
+
+/** Faceted blue-chrome crystal with a soft wireframe shell (inner pages). */
 function Core({ shape }) {
+  if (shape === 'logo') return <LogoCore />
+  return <Crystal shape={shape} />
+}
+
+function Crystal({ shape }) {
   const solid = useRef(null)
   const shell = useRef(null)
   useFrame((_, dt) => {
@@ -25,11 +77,11 @@ function Core({ shape }) {
     <group>
       <mesh ref={solid}>
         {shapes[shape]}
-        <meshPhysicalMaterial color="#3a3f46" metalness={0.92} roughness={0.2} clearcoat={1} clearcoatRoughness={0.1} flatShading envMapIntensity={2.4} />
+        <meshPhysicalMaterial color="#1d4fa8" metalness={0.85} roughness={0.18} clearcoat={1} clearcoatRoughness={0.1} flatShading envMapIntensity={2.2} />
       </mesh>
       <mesh ref={shell} scale={1.55}>
         <icosahedronGeometry args={[1, 1]} />
-        <meshBasicMaterial color={VOLT} wireframe transparent opacity={0.12} />
+        <meshBasicMaterial color={ACCENT} wireframe transparent opacity={0.1} />
       </mesh>
     </group>
   )
@@ -135,7 +187,8 @@ function StudioEnvironment() {
     panel(plane, '#ffffff', 2.2, [0, 5, -6], [12, 2, 1])
     panel(plane, '#ffffff', 1.4, [6, 0, 2], [8, 1.2, 1])
     panel(plane, '#ffffff', 0.6, [0, -5, 2], [10, 3, 1])
-    panel(new THREE.RingGeometry(0.7, 1, 48), VOLT, 4, [-5, 1, -1], [3, 3, 3])
+    panel(new THREE.RingGeometry(0.7, 1, 48), ACCENT, 4, [-5, 1, -1], [3, 3, 3])
+    panel(plane, BRAND, 3, [-2, -3, 5], [6, 2, 1])
     const rt = pmrem.fromScene(room, 0.04)
     pmrem.dispose()
     room.traverse((o) => {
@@ -166,8 +219,8 @@ function Rig({ progress, children }) {
  * `active=false` stops the render loop (off-screen / reduced motion).
  */
 export default function CoreScene({ progress, active = true, shape = 'ico', lite = false, highlight }) {
-  const growthColor = highlight === 'quality' ? '#5b6066' : VOLT
-  const qualityColor = highlight === 'growth' ? '#5b6066' : BONE
+  const growthColor = highlight === 'quality' ? '#33415c' : ACCENT
+  const qualityColor = highlight === 'growth' ? '#33415c' : BONE
   return (
     <Canvas
       camera={{ position: [0, 0, lite ? 11.5 : 6.2], fov: 38 }}
@@ -180,8 +233,8 @@ export default function CoreScene({ progress, active = true, shape = 'ico', lite
     >
       <ambientLight intensity={0.35} />
       <directionalLight position={[4, 3, 5]} intensity={2.2} />
-      <directionalLight position={[-4, 2, -3]} color={VOLT} intensity={1.4} />
-      <pointLight position={[-3, -1, 2]} color={VOLT} intensity={6} distance={8} />
+      <directionalLight position={[-4, 2, -3]} color={ACCENT} intensity={1.4} />
+      <pointLight position={[-3, -1, 2]} color={ACCENT} intensity={6} distance={8} />
       <Rig progress={progress}>
         <Bob>
           <Core shape={shape} />

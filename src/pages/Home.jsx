@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <Marquee items={services.map((s) => s.short)} className="border-y border-line bg-volt py-4 text-2xl text-ink sm:text-3xl [&_.bg-volt]:bg-ink" />
+      <Marquee items={services.map((s) => s.short)} className="border-y border-line bg-brand py-5 text-xl text-white sm:text-2xl [&_.bg-accent]:bg-white/70" />
       <Statement />
       <Practices />
       <ServicesOrbit />

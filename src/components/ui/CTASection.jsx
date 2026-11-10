@@ -23,9 +23,9 @@ export default function CTASection({
           style={rich ? { backgroundPositionY: floorY } : undefined}
         />
       </div>
-      <div aria-hidden className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_50%_110%,rgba(198,255,0,0.18),transparent_55%)]" />
+      <div aria-hidden className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_50%_110%,rgba(77,141,255,0.18),transparent_55%)]" />
       <div className="container-x py-28 text-center sm:py-40">
-        <p className="label mb-8 text-volt">Free discovery call — no obligation</p>
+        <p className="label mb-8 text-accent">Free discovery call — no obligation</p>
         <RevealText text={title} className="display mx-auto text-[length:var(--text-hero)]" />
         <p className="mx-auto mt-10 max-w-xl text-lg leading-relaxed text-bone/70">{text}</p>
         <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">

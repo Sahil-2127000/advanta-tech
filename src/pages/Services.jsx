@@ -37,8 +37,8 @@ export default function Services() {
             <div role="group" aria-label="Filter services by practice" className="flex flex-wrap gap-2">
               {tabs.map((t) => (
                 <button key={t.id} type="button" onClick={() => choose(t.id)} aria-pressed={filter === t.id}
-                  className={`label relative min-h-11 px-4 py-2.5 transition-colors ${filter === t.id ? 'text-ink' : 'border border-line text-bone/70 hover:border-bone/40 hover:text-bone'}`}>
-                  {filter === t.id && <motion.span layoutId="service-filter" className="absolute inset-0 bg-volt" transition={{ duration: 0.5, ease: easeOut }} />}
+                  className={`label relative min-h-11 rounded-full px-4 py-2.5 transition-colors ${filter === t.id ? 'text-white' : 'border border-line text-bone/70 hover:border-bone/40 hover:text-bone'}`}>
+                  {filter === t.id && <motion.span layoutId="service-filter" className="absolute inset-0 rounded-full bg-brand" transition={{ duration: 0.5, ease: easeOut }} />}
                   <span className="relative">{t.label}</span>
                 </button>
               ))}

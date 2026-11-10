@@ -33,9 +33,9 @@ export default function Cursor() {
   return (
     <motion.div
       aria-hidden
-      className="pointer-events-none fixed left-0 top-0 z-[80] rounded-full bg-volt mix-blend-difference"
+      className="pointer-events-none fixed left-0 top-0 z-[80] rounded-full border border-accent/70 bg-accent/10 backdrop-blur-[1px]"
       style={{ x: sx, y: sy, translateX: '-50%', translateY: '-50%' }}
-      animate={{ width: hover ? 44 : 10, height: hover ? 44 : 10, opacity: visible ? 1 : 0 }}
+      animate={{ width: hover ? 46 : 12, height: hover ? 46 : 12, opacity: visible ? 1 : 0 }}
       transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
     />
   )

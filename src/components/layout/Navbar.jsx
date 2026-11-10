@@ -5,15 +5,18 @@ import { X } from 'lucide-react'
 import { nav, site, whatsappLink } from '../../config/site'
 import { easeInOut, easeOut } from '../../lib/motion'
 import Button from '../ui/Button'
+import LogoMark from '../brand/Logo'
 
 export function Wordmark({ className = '' }) {
   return (
     <Link to="/" className={`group inline-flex items-center gap-2.5 ${className}`} aria-label={`${site.name} — home`}>
-      <span className="grid h-8 w-8 place-items-center bg-volt text-ink transition-transform duration-700 ease-[var(--ease-out-expo)] [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
-        <svg viewBox="0 0 64 64" className="h-4 w-4" aria-hidden><path d="M32 6 58 58H45.5l-4.7-10h-17.6l-4.7 10H6zm0 20-6 12.5h12z" fill="currentColor" /></svg>
-      </span>
-      <span className="display text-xl leading-none tracking-wide sm:text-2xl">
-        Advanta<span className="text-volt">.</span>Tech
+      <LogoMark
+        tile
+        className="h-9 w-9 transition-transform duration-700 ease-[var(--ease-out-expo)] group-hover:-rotate-6 group-hover:scale-105"
+        dotClassName="transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:-translate-y-[14%] group-hover:translate-x-[10%]"
+      />
+      <span className="text-[1.05rem] font-semibold leading-none tracking-[-0.02em] sm:text-lg">
+        Advanta <span className="font-normal text-bone/60">Tech</span>
       </span>
     </Link>
   )
@@ -54,12 +57,12 @@ export default function Navbar() {
     <>
       <motion.header
         className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-500 ${
-          solid && !open ? 'border-b border-line/70 bg-ink/85 backdrop-blur-md' : 'border-b border-transparent bg-transparent'
+          solid && !open ? 'border-b border-line/70 bg-ink/70 backdrop-blur-xl' : 'border-b border-transparent bg-transparent'
         }`}
         animate={{ y: hidden && !open ? '-100%' : '0%' }}
         transition={{ duration: 0.5, ease: easeOut }}
       >
-        <a href="#main" className="label sr-only z-50 bg-volt p-3 text-ink focus:not-sr-only focus:absolute focus:left-4 focus:top-4">
+        <a href="#main" className="label sr-only z-50 bg-brand p-3 text-white focus:not-sr-only focus:absolute focus:left-4 focus:top-4">
           Skip to content
         </a>
         <nav className="container-x flex h-[72px] items-center justify-between gap-6 sm:h-20" aria-label="Main">
@@ -71,11 +74,11 @@ export default function Navbar() {
                 <NavLink to={item.to} end={item.to === '/'} className="group relative block px-3.5 py-2">
                   {({ isActive }) => (
                     <>
-                      <span className={`label transition-colors duration-300 ${isActive ? 'text-bone' : 'text-bone/60 group-hover:text-bone'}`}>
+                      <span className={`text-sm font-medium transition-colors duration-300 ${isActive ? 'text-bone' : 'text-bone/60 group-hover:text-bone'}`}>
                         {item.label}
                       </span>
                       {isActive ? (
-                        <motion.span layoutId="nav-active" className="absolute inset-x-3.5 -bottom-0.5 h-0.5 bg-volt" transition={{ duration: 0.6, ease: easeOut }} />
+                        <motion.span layoutId="nav-active" className="absolute inset-x-3.5 -bottom-0.5 h-px bg-gradient-to-r from-transparent via-accent to-transparent" transition={{ duration: 0.6, ease: easeOut }} />
                       ) : (
                         <span className="absolute inset-x-3.5 -bottom-0.5 h-px origin-right scale-x-0 bg-bone/50 transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:origin-left group-hover:scale-x-100" />
                       )}
@@ -93,7 +96,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={() => setOpen((o) => !o)}
-              className="relative z-[70] grid h-11 w-11 place-items-center border border-bone/20 lg:hidden"
+              className="relative z-[70] grid h-11 w-11 place-items-center rounded-full border border-bone/20 lg:hidden"
               aria-expanded={open}
               aria-controls="mobile-menu"
               aria-label={open ? 'Close menu' : 'Open menu'}
@@ -103,7 +106,7 @@ export default function Navbar() {
               ) : (
                 <span className="flex w-5 flex-col gap-1.5" aria-hidden>
                   <span className="h-px w-full bg-bone" />
-                  <span className="h-px w-3/5 bg-volt" />
+                  <span className="h-px w-3/5 bg-accent" />
                 </span>
               )}
             </button>
@@ -129,7 +132,7 @@ function MobileMenu({ pathname }) {
       exit={{ clipPath: 'inset(0 0 100% 0)' }}
       transition={{ duration: 0.8, ease: easeInOut }}
     >
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_100%_0%,rgba(198,255,0,0.12),transparent_50%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_100%_0%,rgba(77,141,255,0.12),transparent_50%)]" />
       <nav className="container-x relative flex flex-1 flex-col justify-center pt-20" aria-label="Mobile">
         <ul className="space-y-1">
           {nav.map((item, i) => {
@@ -144,7 +147,7 @@ function MobileMenu({ pathname }) {
                 >
                   <Link
                     to={item.to}
-                    className={`display flex items-baseline gap-4 py-1 text-[clamp(3rem,14vw,5.5rem)] leading-[0.95] ${active ? 'text-volt' : 'text-bone'}`}
+                    className={`display flex items-baseline gap-4 py-1 text-[clamp(2.4rem,11vw,4.5rem)] leading-[1.05] ${active ? 'text-accent' : 'text-bone'}`}
                     aria-current={active ? 'page' : undefined}
                   >
                     <span className="label text-mute">0{i + 1}</span>

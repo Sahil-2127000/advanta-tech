@@ -5,7 +5,7 @@ export default function Marquee({ items, className = '' }) {
       {items.map((item, i) => (
         <span key={i} className="flex items-center">
           <span className="display px-6 sm:px-10">{item}</span>
-          <span className="h-2.5 w-2.5 rotate-45 bg-volt" />
+          <span className="h-2.5 w-2.5 rotate-45 bg-accent" />
         </span>
       ))}
     </div>

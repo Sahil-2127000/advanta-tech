@@ -12,7 +12,7 @@ const empty = { name: '', email: '', phone: '', company: '', service: '', budget
 function Field({ id, label, error, optional, children }) {
   return (
     <div className="group/f relative">
-      <label htmlFor={id} className="label flex justify-between text-mute transition-colors group-focus-within/f:text-volt">
+      <label htmlFor={id} className="label flex justify-between text-mute transition-colors group-focus-within/f:text-accent">
         <span>{label}</span>
         {optional && <span className="text-mute/60">Optional</span>}
       </label>
@@ -29,9 +29,9 @@ function Field({ id, label, error, optional, children }) {
 }
 
 const inputCls = (err) =>
-  `mt-2 block w-full rounded-none border-0 border-b bg-transparent px-0 py-3 text-base text-bone placeholder:text-mute/50 transition-colors focus:outline-none focus-visible:outline-none ${err ? 'border-danger' : 'border-line focus:border-volt'}`
+  `mt-2 block w-full rounded-none border-0 border-b bg-transparent px-0 py-3 text-base text-bone placeholder:text-mute/50 transition-colors focus:outline-none focus-visible:outline-none ${err ? 'border-danger' : 'border-line focus:border-accent'}`
 
-const chevron = { backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c6ff00' fill='none' stroke-width='1.5'/%3E%3C/svg%3E\")" }
+const chevron = { backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234d8dff' fill='none' stroke-width='1.5'/%3E%3C/svg%3E\")" }
 
 /** Project enquiry form; data goes through lib/enquiry.js. */
 export default function EnquiryForm({ defaultService = '' }) {
@@ -77,7 +77,7 @@ export default function EnquiryForm({ defaultService = '' }) {
     const serviceName = services.find((s) => s.slug === values.service)?.name
     return (
       <motion.div role="status" className="glass p-8 sm:p-10" initial={{ opacity: 0, y: 20, rotateX: 8 }} animate={{ opacity: 1, y: 0, rotateX: 0 }} style={{ transformPerspective: 900 }}>
-        <span className="grid h-12 w-12 place-items-center bg-volt text-ink"><Check className="h-6 w-6" aria-hidden /></span>
+        <span className="grid h-12 w-12 place-items-center rounded-xl bg-brand text-white"><Check className="h-6 w-6" aria-hidden /></span>
         <h3 className="display mt-6 text-4xl sm:text-5xl">Enquiry {result?.demo ? 'captured' : 'received'}.</h3>
         <p className="mt-4 max-w-md leading-relaxed text-bone/70">
           Thanks, {values.name.split(' ')[0]}.{' '}
@@ -128,8 +128,8 @@ export default function EnquiryForm({ defaultService = '' }) {
       <div className="sm:col-span-2">
         <label className="flex cursor-pointer items-start gap-3 text-sm text-bone/70">
           <input id={id('consent')} type="checkbox" checked={values.consent} onChange={set('consent')} className="peer sr-only" aria-invalid={!!errors.consent} aria-describedby={describedBy('consent')} />
-          <span className={`mt-0.5 grid h-5 w-5 shrink-0 place-items-center border transition-colors peer-checked:border-volt peer-checked:bg-volt peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-volt ${errors.consent ? 'border-danger' : 'border-bone/40'}`}>
-            {values.consent && <Check className="h-3.5 w-3.5 text-ink" aria-hidden />}
+          <span className={`mt-0.5 grid h-5 w-5 shrink-0 place-items-center border transition-colors peer-checked:border-brand peer-checked:bg-brand peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-accent ${errors.consent ? 'border-danger' : 'border-bone/40'}`}>
+            {values.consent && <Check className="h-3.5 w-3.5 text-white" aria-hidden />}
           </span>
           I agree to be contacted about this enquiry. We never share your details.
         </label>

@@ -44,11 +44,11 @@ function Pillars() {
           <Reveal key={p.label} delay={i * 0.12} className="h-full">
             <TiltCard max={7} className="group h-full">
               <div className="glass relative h-full p-8 [transform-style:preserve-3d] sm:p-12">
-                <span className="grid h-14 w-14 place-items-center bg-volt text-ink" style={{ transform: 'translateZ(60px)' }}>
+                <span className="grid h-14 w-14 place-items-center rounded-xl bg-brand text-white" style={{ transform: 'translateZ(60px)' }}>
                   <p.icon className="h-6 w-6" aria-hidden />
                 </span>
                 <div style={{ transform: 'translateZ(35px)' }}>
-                  <p className="label mt-10 text-volt">{p.label}</p>
+                  <p className="label mt-10 text-accent">{p.label}</p>
                   <h3 className="display mt-4 text-[length:var(--text-h3)] leading-[1]">{p.title}</h3>
                   <p className="mt-5 max-w-md text-bone/65">{p.text}</p>
                 </div>

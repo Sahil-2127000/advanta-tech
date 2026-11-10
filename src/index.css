@@ -2,27 +2,32 @@
 
 /* ───────────────────────── Design tokens ───────────────────────── */
 @theme {
-  --color-ink: #08090a;
-  --color-coal: #0e0f11;
-  --color-graphite: #15171a;
-  --color-steel: #1f2226;
-  --color-line: #262a2f;
-  --color-mute: #8b9097;
-  --color-bone: #ecebe6;
-  --color-volt: #c6ff00;
-  --color-volt-dim: #9fcc00;
-  --color-danger: #ff5a4e;
+  /* Deep navy surfaces derived from the logo blue */
+  --color-ink: #040915;
+  --color-coal: #08111f;
+  --color-graphite: #0d182b;
+  --color-steel: #14223a;
+  --color-line: #1a2a45;
+  --color-mute: #8593ab;
+  --color-bone: #e9eff9;
+  /* Brand — #0455c0 is the exact logo blue; accent/sky are lifted tints for text on navy */
+  --color-brand: #0455c0;
+  --color-brand-deep: #033c8a;
+  --color-accent: #4d8dff;
+  --color-accent-deep: #2f6fe6;
+  --color-sky: #a9cbff;
+  --color-danger: #ff6b6b;
 
-  --font-display: 'Archivo', 'Arial Narrow', sans-serif;
-  --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-display: 'Geist', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Geist', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, monospace;
 
   /* Fluid type scale */
-  --text-mega: clamp(3.4rem, 11.5vw, 11.5rem);
-  --text-hero: clamp(3rem, 9vw, 9rem);
-  --text-h1: clamp(2.6rem, 6.6vw, 6.6rem);
-  --text-h2: clamp(2.1rem, 4.8vw, 4.6rem);
-  --text-h3: clamp(1.5rem, 2.3vw, 2.2rem);
+  --text-mega: clamp(3rem, 8vw, 8.5rem);
+  --text-hero: clamp(2.6rem, 6.2vw, 6.4rem);
+  --text-h1: clamp(2.3rem, 4.9vw, 4.9rem);
+  --text-h2: clamp(1.9rem, 3.7vw, 3.5rem);
+  --text-h3: clamp(1.25rem, 1.7vw, 1.6rem);
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
@@ -42,11 +47,11 @@
     overflow-x: hidden;
   }
   ::selection {
-    background: var(--color-volt);
+    background: var(--color-accent);
     color: var(--color-ink);
   }
   :focus-visible {
-    outline: 2px solid var(--color-volt);
+    outline: 2px solid var(--color-accent);
     outline-offset: 3px;
   }
 }
@@ -58,27 +63,40 @@
     margin-inline: auto;
     padding-inline: clamp(1rem, 4vw, 3.5rem);
   }
+  /* Refined, sentence-case display type: medium weight, tight tracking */
   .display {
     font-family: var(--font-display);
-    font-stretch: 72%;
-    font-weight: 800;
-    text-transform: uppercase;
-    line-height: 0.92;
-    letter-spacing: -0.015em;
+    font-weight: 500;
+    line-height: 1.04;
+    letter-spacing: -0.042em;
   }
   .label {
     font-family: var(--font-mono);
     font-size: 0.7rem;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
+  }
+  /* Logo-blue gradient for highlighted words */
+  .text-gradient {
+    background: linear-gradient(100deg, var(--color-sky) 0%, var(--color-accent) 45%, #2a6bff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  /* Quiet silver for the secondary phrase */
+  .text-soft {
+    background: linear-gradient(180deg, rgb(233 239 249 / 0.95), rgb(133 147 171 / 0.75));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
   .text-outline {
     color: transparent;
-    -webkit-text-stroke: 1.5px rgb(236 235 230 / 0.6);
+    -webkit-text-stroke: 1px rgb(233 239 249 / 0.45);
   }
-  .text-outline-volt {
+  .text-outline-accent {
     color: transparent;
-    -webkit-text-stroke: 1.5px var(--color-volt);
+    -webkit-text-stroke: 1px var(--color-accent);
   }
   /* Hairline technical grid used behind sections */
   .bg-grid {
@@ -87,10 +105,15 @@
       linear-gradient(to bottom, rgb(255 255 255 / 0.035) 1px, transparent 1px);
     background-size: 72px 72px;
   }
+  /* Grid that fades out toward the edges */
+  .bg-grid-fade {
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 75%);
+  }
   .glass {
-    background: linear-gradient(160deg, rgb(255 255 255 / 0.06), rgb(255 255 255 / 0.015));
-    border: 1px solid rgb(255 255 255 / 0.08);
-    backdrop-filter: blur(14px);
+    background: linear-gradient(160deg, rgb(120 165 255 / 0.07), rgb(255 255 255 / 0.015));
+    border: 1px solid rgb(140 180 255 / 0.12);
+    border-radius: 1.5rem;
+    backdrop-filter: blur(16px);
   }
 }
 
@@ -100,10 +123,36 @@
   position: fixed;
   inset: 0;
   z-index: 60;
-  opacity: 0.06;
+  opacity: 0.035;
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
+
+/* Slow drifting aurora glows */
+@keyframes aurora-a {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(8%, 6%, 0) scale(1.15); }
+}
+@keyframes aurora-b {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1.1); }
+  50% { transform: translate3d(-10%, -4%, 0) scale(0.95); }
+}
+.aurora-a { animation: aurora-a 18s ease-in-out infinite; }
+.aurora-b { animation: aurora-b 22s ease-in-out infinite; }
+
+/* Light sweeping along a hairline */
+@keyframes beam {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(400%); }
+}
+.animate-beam { animation: beam 5.5s var(--ease-in-out-quart) infinite; }
+
+/* Shimmer for the primary button */
+@keyframes sheen {
+  0%, 70% { transform: translateX(-120%) skewX(-20deg); }
+  100% { transform: translateX(320%) skewX(-20deg); }
+}
+.animate-sheen { animation: sheen 4.5s ease-in-out infinite; }
 
 @keyframes marquee {
   from { transform: translateX(0); }

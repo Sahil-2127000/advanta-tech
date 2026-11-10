@@ -30,13 +30,13 @@ export default function ServiceDetail() {
   return (
     <>
       <section className="bg-grid relative overflow-hidden border-b border-line pt-32 sm:pt-36">
-        <div aria-hidden className="absolute right-0 top-0 h-[70%] w-[60%]" style={{ background: `radial-gradient(ellipse at 70% 40%, ${growth ? 'rgba(198,255,0,0.12)' : 'rgba(236,235,230,0.08)'}, transparent 60%)` }} />
+        <div aria-hidden className="absolute right-0 top-0 h-[70%] w-[60%]" style={{ background: `radial-gradient(ellipse at 70% 40%, ${growth ? 'rgba(77,141,255,0.12)' : 'rgba(236,235,230,0.08)'}, transparent 60%)` }} />
         <div className="container-x relative grid items-center gap-10 pb-16 lg:grid-cols-12">
           <div className="lg:col-span-7">
-            <Link to="/services" className="label group mb-10 inline-flex items-center gap-2 text-mute hover:text-volt">
+            <Link to="/services" className="label group mb-10 inline-flex items-center gap-2 text-mute hover:text-accent">
               <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" aria-hidden /> All services
             </Link>
-            <p className={`label mb-6 ${growth ? 'text-volt' : 'text-bone/70'}`}>
+            <p className={`label mb-6 ${growth ? 'text-accent' : 'text-bone/70'}`}>
               {practice.kicker} / {practice.title} / {String(i + 1).padStart(2, '0')}
             </p>
             <RevealText as="h1" onMount delay={0.2} text={s.name} className="display max-w-[14ch] text-[length:var(--text-h1)]" />
@@ -71,7 +71,7 @@ export default function ServiceDetail() {
             <ul className="mt-8 border-t border-line">
               {s.outcomes.map((o, idx) => (
                 <Reveal as="li" key={o} delay={idx * 0.08} className="flex gap-4 border-b border-line py-5">
-                  <Check className="mt-1 h-5 w-5 shrink-0 text-volt" aria-hidden />
+                  <Check className="mt-1 h-5 w-5 shrink-0 text-accent" aria-hidden />
                   <span className="text-lg">{o}</span>
                 </Reveal>
               ))}
@@ -87,7 +87,7 @@ export default function ServiceDetail() {
           <div className="mt-12 grid gap-px border border-line bg-line sm:grid-cols-2 lg:grid-cols-5">
             {s.deliverables.map((d, idx) => (
               <Reveal key={d} delay={idx * 0.07} className="group bg-coal p-7 transition-colors duration-500 hover:bg-graphite sm:odd:last:col-span-2 lg:odd:last:col-span-1">
-                <span className="label text-volt">{String(idx + 1).padStart(2, '0')}</span>
+                <span className="label text-accent">{String(idx + 1).padStart(2, '0')}</span>
                 <p className="display mt-12 text-2xl leading-[1.02] transition-transform duration-500 group-hover:-translate-y-1">{d}</p>
               </Reveal>
             ))}
@@ -100,8 +100,8 @@ export default function ServiceDetail() {
           <SectionLabel index="04">How it runs</SectionLabel>
           <ol className="mt-12 grid gap-5 md:grid-cols-4">
             {process.map((p, idx) => (
-              <Reveal as="li" key={p.k} delay={idx * 0.08} className="border-t-2 border-line pt-6 transition-colors hover:border-volt">
-                <span className="label text-volt">{p.k}</span>
+              <Reveal as="li" key={p.k} delay={idx * 0.08} className="border-t-2 border-line pt-6 transition-colors hover:border-accent">
+                <span className="label text-accent">{p.k}</span>
                 <h3 className="display mt-4 text-3xl">{p.title}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-bone/60">{p.text}</p>
               </Reveal>
@@ -127,7 +127,7 @@ export default function ServiceDetail() {
         <Link to={`/services/${next.slug}`} className="group container-x flex items-center justify-between gap-6 py-14 sm:py-20">
           <span>
             <span className="label text-mute">Next service</span>
-            <span className="display mt-3 block text-[length:var(--text-h2)] transition-colors duration-500 group-hover:text-volt">{next.name}</span>
+            <span className="display mt-3 block text-[length:var(--text-h2)] transition-colors duration-500 group-hover:text-accent">{next.name}</span>
           </span>
           <ArrowRight className="h-10 w-10 shrink-0 transition-transform duration-500 group-hover:translate-x-2 sm:h-16 sm:w-16" aria-hidden />
         </Link>
