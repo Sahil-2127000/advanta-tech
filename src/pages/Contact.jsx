@@ -9,10 +9,8 @@ import TiltCard from '../components/three/TiltCard'
 import EnquiryForm from '../components/forms/EnquiryForm'
 import { site, whatsappLink } from '../config/site'
 import { getService } from '../data/services'
-import { usePageMeta } from '../hooks/usePageMeta'
 
 export default function Contact() {
-  usePageMeta('Contact', 'Start a project with Advanta Tech — free discovery call, written proposal, no obligation.')
   const [params] = useSearchParams()
   const service = getService(params.get('service') ?? '')
 

@@ -6,12 +6,10 @@ import ServiceCard from '../components/cards/ServiceCard'
 import CTASection from '../components/ui/CTASection'
 import { practices, services } from '../data/services'
 import { easeOut } from '../lib/motion'
-import { usePageMeta } from '../hooks/usePageMeta'
 
 const tabs = [{ id: 'all', label: 'All services' }, ...Object.values(practices).map((p) => ({ id: p.id, label: p.title }))]
 
 export default function Services() {
-  usePageMeta('Services', 'SEO, social, PPC, web & e-commerce development, branding, video, automation, plus manual, automation, API, performance and mobile testing.')
   const [params, setParams] = useSearchParams()
   const initial = tabs.some((t) => t.id === params.get('practice')) ? params.get('practice') : 'all'
   const [filter, setFilter] = useState(initial)

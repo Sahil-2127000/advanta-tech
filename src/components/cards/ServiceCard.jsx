@@ -9,7 +9,6 @@ export default function ServiceCard({ service: s, index }) {
     <TiltCard max={8} className="group h-full">
       <Link
         to={`/services/${s.slug}`}
-        data-cursor="View"
         className="relative flex h-full min-h-[300px] flex-col overflow-hidden rounded-2xl border border-line bg-coal p-7 transition-colors duration-500 [transform-style:preserve-3d] hover:border-bone/25 sm:p-8"
       >
         <div aria-hidden className="bg-grid absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100" />

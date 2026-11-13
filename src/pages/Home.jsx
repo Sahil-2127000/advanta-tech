@@ -7,10 +7,8 @@ import { Faq, Industries, Principles, Stats } from '../components/home/Closing'
 import Marquee from '../components/ui/Marquee'
 import CTASection from '../components/ui/CTASection'
 import { services } from '../data/services'
-import { usePageMeta } from '../hooks/usePageMeta'
 
 export default function Home() {
-  usePageMeta(null)
   return (
     <>
       <Hero />

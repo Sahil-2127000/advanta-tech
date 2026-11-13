@@ -4,6 +4,8 @@
  */
 export const site = {
   name: 'Advanta Tech',
+  // Production domain — used for canonical URLs, the sitemap and social previews. No trailing slash.
+  url: 'https://advantatech.co',
   tagline: 'Engineered growth. Assured quality.',
   description:
     'Advanta Tech is a digital growth and software quality studio: SEO, paid media, social, web and e-commerce development, branding, plus manual, automation, API and performance testing.',
@@ -13,6 +15,14 @@ export const site = {
     phoneHref: 'tel:+919888444290',
     email: 'hello@advantatech.co',
     address: ['Plot No. C-205, Phase 8B, Industrial Area', 'Sector 74, Sahibzada Ajit Singh Nagar', 'Punjab 140307'],
+    // Same address, structured for search engines (schema.org PostalAddress)
+    postal: {
+      streetAddress: 'Plot No. C-205, Phase 8B, Industrial Area, Sector 74',
+      addressLocality: 'Sahibzada Ajit Singh Nagar (Mohali)',
+      addressRegion: 'Punjab',
+      postalCode: '140307',
+      addressCountry: 'IN',
+    },
   },
 
   // International format, digits only (no +, spaces or dashes). Same as the mobile number.

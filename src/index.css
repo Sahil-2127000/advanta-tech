@@ -178,12 +178,3 @@
     scroll-behavior: auto !important;
   }
 }
-
-/* Custom cursor replaces the native arrow on desktop; text fields keep their caret */
-html.custom-cursor,
-html.custom-cursor * {
-  cursor: none;
-}
-html.custom-cursor :is(input:not([type='checkbox']):not([type='radio']), textarea, [contenteditable='true']) {
-  cursor: text;
-}

@@ -12,13 +12,11 @@ import NotFound from './NotFound'
 import { byPractice, getService, practices, services } from '../data/services'
 import { process } from '../data/content'
 import { easeOut } from '../lib/motion'
-import { usePageMeta } from '../hooks/usePageMeta'
 import { whatsappLink } from '../config/site'
 
 export default function ServiceDetail() {
   const { slug } = useParams()
   const s = getService(slug)
-  usePageMeta(s?.name ?? 'Service not found', s?.summary)
   if (!s) return <NotFound />
 
   const growth = s.practice === 'growth'

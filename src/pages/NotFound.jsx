@@ -2,10 +2,8 @@ import { motion } from 'motion/react'
 import Button from '../components/ui/Button'
 import RevealText from '../components/ui/RevealText'
 import { easeOut } from '../lib/motion'
-import { usePageMeta } from '../hooks/usePageMeta'
 
 export default function NotFound() {
-  usePageMeta('Page not found', 'This page does not exist.')
   return (
     <section className="bg-grid relative flex min-h-svh items-center overflow-hidden pt-24 [perspective:1200px]">
       <motion.p

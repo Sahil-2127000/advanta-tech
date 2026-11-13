@@ -9,7 +9,20 @@ const ENDPOINT = import.meta.env.VITE_ENQUIRY_ENDPOINT
 
 export const isDemoMode = !ENDPOINT
 
-export async function submitEnquiry(payload) {
+/** Only these fields ever leave the browser, trimmed and length-capped. */
+export const LIMITS = { name: 100, email: 254, phone: 20, company: 120, service: 60, budget: 40, message: 1500 }
+
+export function cleanEnquiry(values) {
+  return Object.fromEntries(Object.entries(LIMITS).map(([k, max]) => [k, String(values[k] ?? '').trim().slice(0, max)]))
+}
+
+/**
+ * `website` is a honeypot: the field is invisible to people, so anything typed into it came from a bot.
+ * Bots get a normal-looking success response and nothing is sent.
+ */
+export async function submitEnquiry(values) {
+  if (values.website) return { ok: true, demo: false }
+  const payload = cleanEnquiry(values)
   if (!ENDPOINT) {
     await new Promise((r) => setTimeout(r, 700))
     return { ok: true, demo: true }
@@ -32,7 +45,9 @@ export function validateEnquiry(values) {
   else if (!/^[+\d][\d\s()-]*$/.test(phone) || phone.replace(/\D/g, '').length < 10) errors.phone = 'Enter a valid phone number (at least 10 digits).'
   if (!values.service) errors.service = 'Pick the service you need.'
   if (!values.message?.trim() || values.message.trim().length < 10) errors.message = 'A sentence or two about your project helps.'
-  else if (values.message.length > 1500) errors.message = 'Keep it under 1500 characters.'
+  else if (values.message.length > LIMITS.message) errors.message = `Keep it under ${LIMITS.message} characters.`
+  if (values.name && values.name.length > LIMITS.name) errors.name = 'That name is too long.'
+  if (values.company && values.company.length > LIMITS.company) errors.company = 'That is too long.'
   if (!values.consent) errors.consent = 'Please agree so we can reply to you.'
   return errors
 }

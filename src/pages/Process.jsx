@@ -8,7 +8,6 @@ import TiltCard from '../components/three/TiltCard'
 import ProcessPinned from '../components/home/ProcessPinned'
 import { Faq } from '../components/home/Closing'
 import { process } from '../data/content'
-import { usePageMeta } from '../hooks/usePageMeta'
 
 const models = [
   { name: 'Project', fit: 'Defined scope', text: 'A fixed-price engagement with clear deliverables — a website build, an SEO audit, a test automation framework.', points: ['Fixed quote upfront', 'Milestone-based delivery', 'Handover & documentation'] },
@@ -17,7 +16,6 @@ const models = [
 ]
 
 export default function Process() {
-  usePageMeta('Process', 'How Advanta Tech works: discover, strategise, execute and optimise — plus flexible engagement models.')
   return (
     <>
       <PageHero

@@ -38,3 +38,17 @@ npm run lint
 
 `src/lib/enquiry.js` is the single integration point. Set `VITE_ENQUIRY_ENDPOINT` (see `.env.example`) to any
 endpoint that accepts JSON `POST`. Without it the form runs in demo mode and says so — nothing is sent.
+
+## SEO
+
+- **One source of truth:** `src/seo/seo.js` holds every route's title, description, canonical URL, Open Graph / Twitter card and schema.org JSON-LD (ProfessionalService with address and contact, WebSite, FAQPage, Service, BreadcrumbList, ItemList, ContactPage, AboutPage).
+- **Static HTML per page:** `npm run build` writes `dist/<route>.html` for all 24 pages with their own meta in the HTML, so Google and link previews (WhatsApp, LinkedIn, X) see them without running JavaScript. It also writes `404.html` (noindex), `sitemap.xml` and `robots.txt`.
+- **Domain:** set `url` in `src/config/site.js` (currently `https://advantatech.co`). Canonicals, the sitemap and social images all use it.
+- **Social image:** `public/og-image.png` (1200×630).
+- **After launch:** submit `https://<domain>/sitemap.xml` in Google Search Console and Bing Webmaster Tools, and create or verify a Google Business Profile with the same address and phone.
+
+## Security
+
+- `npm audit`: 0 known vulnerabilities. No secrets in the repo; `.env` is git-ignored.
+- **Security headers** (CSP, HSTS, nosniff, frame blocking, referrer and permissions policy) live in `security-headers.js`. The build writes them to `dist/_headers` (Netlify, Cloudflare Pages); `vercel.json` carries the same set for Vercel; `npm run preview` serves with them so you can test locally.
+- **Enquiry form:** only whitelisted fields are sent, each trimmed and length-capped; inputs have `maxLength`; a hidden honeypot field silently drops bot submissions; double submits are ignored. Always validate again on whatever server receives the form.

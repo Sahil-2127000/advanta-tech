@@ -3,11 +3,11 @@ import { AnimatePresence, motion } from 'motion/react'
 import { AlertCircle, Check, Loader2 } from 'lucide-react'
 import Button from '../ui/Button'
 import { practices, services } from '../../data/services'
-import { isDemoMode, submitEnquiry, validateEnquiry } from '../../lib/enquiry'
+import { isDemoMode, LIMITS, submitEnquiry, validateEnquiry } from '../../lib/enquiry'
 import { whatsappLink } from '../../config/site'
 
 const budgets = ['Not sure yet', 'Under $1k / month', '$1k — $5k / month', '$5k — $15k / month', '$15k+ / month', 'One-off project']
-const empty = { name: '', email: '', phone: '', company: '', service: '', budget: '', message: '', consent: false }
+const empty = { name: '', email: '', phone: '', company: '', service: '', budget: '', message: '', website: '', consent: false }
 
 function Field({ id, label, error, optional, children }) {
   return (
@@ -51,6 +51,7 @@ export default function EnquiryForm({ defaultService = '' }) {
 
   const onSubmit = async (e) => {
     e.preventDefault()
+    if (status === 'sending') return // ignore double submits
     const errs = validateEnquiry(values)
     setErrors(errs)
     if (Object.keys(errs).length) {
@@ -94,11 +95,16 @@ export default function EnquiryForm({ defaultService = '' }) {
   }
 
   const input = (k, props) => (
-    <input id={id(k)} value={values[k]} onChange={set(k)} className={inputCls(errors[k])} aria-invalid={!!errors[k]} aria-describedby={describedBy(k)} {...props} />
+    <input id={id(k)} name={k} maxLength={LIMITS[k]} value={values[k]} onChange={set(k)} className={inputCls(errors[k])} aria-invalid={!!errors[k]} aria-describedby={describedBy(k)} {...props} />
   )
 
   return (
     <form onSubmit={onSubmit} noValidate className="grid gap-8 sm:grid-cols-2">
+      {/* Honeypot — hidden from people and assistive tech; bots tend to fill it */}
+      <div aria-hidden className="absolute -left-[9999px] h-px w-px overflow-hidden">
+        <label htmlFor={id('website')}>Leave this empty</label>
+        <input id={id('website')} name="website" type="text" tabIndex={-1} autoComplete="off" value={values.website} onChange={set('website')} />
+      </div>
       <Field id={id('name')} label="Full name" error={errors.name}>{input('name', { type: 'text', autoComplete: 'name', placeholder: 'Your name' })}</Field>
       <Field id={id('email')} label="Work email" error={errors.email}>{input('email', { type: 'email', autoComplete: 'email', placeholder: 'you@company.com' })}</Field>
       <Field id={id('phone')} label="Phone / WhatsApp" error={errors.phone}>{input('phone', { type: 'tel', autoComplete: 'tel', inputMode: 'tel', placeholder: '+91 98765 43210' })}</Field>
@@ -122,7 +128,7 @@ export default function EnquiryForm({ defaultService = '' }) {
       </Field>
       <div className="sm:col-span-2">
         <Field id={id('message')} label="Project details" error={errors.message}>
-          <textarea id={id('message')} rows={4} value={values.message} onChange={set('message')} className={`${inputCls(errors.message)} resize-none`} aria-invalid={!!errors.message} aria-describedby={describedBy('message')} placeholder="Goals, timelines, what's not working today…" />
+          <textarea id={id('message')} name="message" maxLength={LIMITS.message} rows={4} value={values.message} onChange={set('message')} className={`${inputCls(errors.message)} resize-none`} aria-invalid={!!errors.message} aria-describedby={describedBy('message')} placeholder="Goals, timelines, what's not working today…" />
         </Field>
       </div>
       <div className="sm:col-span-2">

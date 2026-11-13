@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import Navbar from './Navbar'
 import Footer from './Footer'
 import Cursor from './Cursor'
+import Seo from './Seo'
 import ScrollProgress from './ScrollProgress'
 import { easeInOut } from '../../lib/motion'
 
@@ -26,6 +27,7 @@ export default function Layout() {
 
   return (
     <>
+      <Seo />
       <ScrollProgress />
       <Navbar />
       <AnimatePresence mode="wait" initial={false} onExitComplete={scrollAfterNavigation}>

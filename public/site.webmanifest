@@ -1,0 +1,13 @@
+{
+  "name": "Advanta Tech",
+  "short_name": "Advanta Tech",
+  "description": "Digital marketing and software testing company — engineered growth, assured quality.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#040915",
+  "theme_color": "#040915",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/advanta-logo.png", "sizes": "500x500", "type": "image/png", "purpose": "any" }
+  ]
+}

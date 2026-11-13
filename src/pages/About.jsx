@@ -6,7 +6,6 @@ import CTASection from '../components/ui/CTASection'
 import TiltCard from '../components/three/TiltCard'
 import { Industries, Principles, Stats } from '../components/home/Closing'
 import { Rocket, Target } from 'lucide-react'
-import { usePageMeta } from '../hooks/usePageMeta'
 
 const pillars = [
   { icon: Target, label: 'Mission', title: 'Make growth measurable and quality non-negotiable.', text: 'Every engagement is tied to a business outcome, and every release we touch is tested like our name is on it.' },
@@ -62,7 +61,6 @@ function Pillars() {
 }
 
 export default function About() {
-  usePageMeta('About', 'Advanta Tech brings digital marketing and software quality assurance together in one accountable team.')
   return (
     <>
       <PageHero
