@@ -13,7 +13,7 @@ export default function ServicesOrbit() {
           <RevealText text={'19 services.\n*One* system.'} className="display mx-auto mt-8 text-[length:var(--text-h1)]" />
         </div>
         <div className="mt-12 md:mt-6"><ServiceCylinder /></div>
-        <div className="mt-8 flex justify-center">
+        <div className="relative z-10 mt-10 flex justify-center">
           <Button to="/services" variant="outline">View all services</Button>
         </div>
       </div>

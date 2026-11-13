@@ -62,7 +62,7 @@ export default function Footer() {
           </button>
         </div>
       </div>
-      <p aria-hidden className="display pointer-events-none select-none whitespace-nowrap bg-gradient-to-b from-steel to-transparent bg-clip-text pb-[0.05em] text-center text-[19vw] font-semibold leading-[0.8] text-transparent">Advanta</p>
+      <p aria-hidden className="display pointer-events-none select-none whitespace-nowrap bg-gradient-to-b from-steel to-transparent bg-clip-text pb-[0.05em] text-center text-[13vw] font-semibold leading-[0.8] text-transparent">Advanta Tech</p>
     </footer>
   )
 }

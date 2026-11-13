@@ -53,11 +53,13 @@ export default function ServiceCylinder() {
   }
 
   return (
-    <div ref={ref} className="relative h-[420px] [perspective:1400px]" aria-label="Service list">
-      <Ring items={byPractice('growth')} rotate={growthRotate} y={-60} accent />
-      <Ring items={byPractice('quality')} rotate={qualityRotate} y={70} />
-      <p className="label absolute left-0 top-[34%] text-accent">Growth ↻</p>
-      <p className="label absolute right-0 top-[64%] text-bone/60">Quality ↺</p>
+    // Front pills sit 540px toward the viewer and the rings tilt 10°, so they project well below
+    // their anchor. The ring offsets are chosen so the whole projected cylinder stays inside this box.
+    <div ref={ref} className="relative h-[480px] [perspective:1400px]" aria-label="Service list">
+      <Ring items={byPractice('growth')} rotate={growthRotate} y={-150} accent />
+      <Ring items={byPractice('quality')} rotate={qualityRotate} y={-20} />
+      <p className="label absolute left-0 top-[16%] text-accent">Growth ↻</p>
+      <p className="label absolute right-0 top-[43%] text-bone/60">Quality ↺</p>
     </div>
   )
 }
