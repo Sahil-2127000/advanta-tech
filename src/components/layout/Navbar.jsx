@@ -26,7 +26,6 @@ export default function Navbar() {
   const { pathname } = useLocation()
   const { scrollY } = useScroll()
   const [solid, setSolid] = useState(false)
-  const [hidden, setHidden] = useState(false)
   const [open, setOpen] = useState(false)
   const [lastPath, setLastPath] = useState(pathname)
 
@@ -36,11 +35,8 @@ export default function Navbar() {
     setOpen(false)
   }
 
-  useMotionValueEvent(scrollY, 'change', (y) => {
-    const prev = scrollY.getPrevious() ?? 0
-    setSolid(y > 40)
-    setHidden((h) => (y > 400 && y > prev + 4 ? true : y < prev - 4 ? false : h))
-  })
+  // The navbar stays pinned at all times; it only gains a solid backdrop once you scroll.
+  useMotionValueEvent(scrollY, 'change', (y) => setSolid(y > 40))
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
@@ -55,12 +51,10 @@ export default function Navbar() {
 
   return (
     <>
-      <motion.header
+      <header
         className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-500 ${
           solid && !open ? 'border-b border-line/70 bg-ink/70 backdrop-blur-xl' : 'border-b border-transparent bg-transparent'
         }`}
-        animate={{ y: hidden && !open ? '-100%' : '0%' }}
-        transition={{ duration: 0.5, ease: easeOut }}
       >
         <a href="#main" className="label sr-only z-50 bg-brand p-3 text-white focus:not-sr-only focus:absolute focus:left-4 focus:top-4">
           Skip to content
@@ -112,7 +106,7 @@ export default function Navbar() {
             </button>
           </div>
         </nav>
-      </motion.header>
+      </header>
 
       <AnimatePresence>{open && <MobileMenu pathname={pathname} />}</AnimatePresence>
     </>
