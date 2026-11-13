@@ -38,6 +38,7 @@ export function organizationSchema() {
       email: site.contact.email,
       telephone: site.contact.phoneHref.replace('tel:', ''),
       address: { '@type': 'PostalAddress', ...site.contact.postal },
+      openingHoursSpecification: [{ '@type': 'OpeningHoursSpecification', dayOfWeek: site.openingHours.days, opens: site.openingHours.opens, closes: site.openingHours.closes }],
       areaServed: [{ '@type': 'Country', name: 'India' }, 'Worldwide'],
       sameAs: site.socials.map((s) => s.href),
       contactPoint: {

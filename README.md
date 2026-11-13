@@ -30,7 +30,7 @@ npm run lint
 
 ## Editing content
 
-- `src/config/site.js` — phone, email, address, WhatsApp number, hours (**sample — confirm**), social links
+- `src/config/site.js` — phone, email, address, WhatsApp number, hours, social links
 - `src/data/services.js` — all 19 services: copy, deliverables, outcomes, tools
 - `src/data/content.js` — stats, process, principles, industries, FAQ
 

@@ -1,6 +1,6 @@
 /**
  * Central business configuration.
- * Office hours are still sample values — confirm before launch.
+ * Business details shown across the site and given to search engines.
  */
 export const site = {
   name: 'Advanta Tech',
@@ -30,10 +30,12 @@ export const site = {
   whatsappMessage: "Hi Advanta Tech, I'd like to discuss a project.",
 
   hours: [
-    { days: 'Mon — Fri', time: '09:30 — 18:30' },
-    { days: 'Saturday', time: '10:00 — 14:00' },
+    { days: 'Mon — Fri', time: '10:00 — 18:00' },
+    { days: 'Saturday', time: 'Closed' },
     { days: 'Sunday', time: 'Closed' },
   ],
+  // Same hours in schema.org form for search engines
+  openingHours: { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '10:00', closes: '18:00' },
 
   socials: [
     { label: 'LinkedIn', href: 'https://www.linkedin.com/company/advantatech/' },
