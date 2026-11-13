@@ -87,7 +87,6 @@ export default function Contact() {
                   </div>
                 ))}
               </dl>
-              <p className="label mt-4 text-[0.6rem] text-mute/70">Sample hours — edit in src/config/site.js</p>
             </div>
           </div>
           <Reveal className="lg:col-span-7">

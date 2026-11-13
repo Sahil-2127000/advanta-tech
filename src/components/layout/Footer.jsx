@@ -56,7 +56,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="label flex flex-col gap-4 py-8 text-mute sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} {site.name}. Contact details shown are placeholders.</p>
+          <p>© {new Date().getFullYear()} {site.name}. All rights reserved.</p>
           <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="group inline-flex items-center gap-2 self-start hover:text-accent">
             Back to top <ArrowUp className="h-4 w-4 transition-transform group-hover:-translate-y-1" aria-hidden />
           </button>

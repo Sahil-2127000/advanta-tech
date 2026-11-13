@@ -101,7 +101,7 @@ export default function EnquiryForm({ defaultService = '' }) {
     <form onSubmit={onSubmit} noValidate className="grid gap-8 sm:grid-cols-2">
       <Field id={id('name')} label="Full name" error={errors.name}>{input('name', { type: 'text', autoComplete: 'name', placeholder: 'Your name' })}</Field>
       <Field id={id('email')} label="Work email" error={errors.email}>{input('email', { type: 'email', autoComplete: 'email', placeholder: 'you@company.com' })}</Field>
-      <Field id={id('phone')} label="Phone / WhatsApp" optional error={errors.phone}>{input('phone', { type: 'tel', autoComplete: 'tel', placeholder: '+00 000 000 000' })}</Field>
+      <Field id={id('phone')} label="Phone / WhatsApp" error={errors.phone}>{input('phone', { type: 'tel', autoComplete: 'tel', inputMode: 'tel', placeholder: '+91 98765 43210' })}</Field>
       <Field id={id('company')} label="Company" optional>{input('company', { type: 'text', autoComplete: 'organization', placeholder: 'Company or website' })}</Field>
       <Field id={id('service')} label="Service needed" error={errors.service}>
         <select id={id('service')} value={values.service} onChange={set('service')} className={`${inputCls(errors.service)} appearance-none bg-[length:12px] bg-[right_center] bg-no-repeat pr-6`} style={chevron} aria-invalid={!!errors.service} aria-describedby={describedBy('service')}>

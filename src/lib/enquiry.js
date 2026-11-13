@@ -27,7 +27,9 @@ export function validateEnquiry(values) {
   const errors = {}
   if (!values.name?.trim() || values.name.trim().length < 2) errors.name = 'Tell us your name.'
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(values.email?.trim() ?? '')) errors.email = 'Enter a valid work email.'
-  if (values.phone && !/^[+\d][\d\s()-]{6,}$/.test(values.phone.trim())) errors.phone = 'Enter a valid phone number.'
+  const phone = values.phone?.trim() ?? ''
+  if (!phone) errors.phone = 'Add a phone number so we can call you back.'
+  else if (!/^[+\d][\d\s()-]*$/.test(phone) || phone.replace(/\D/g, '').length < 10) errors.phone = 'Enter a valid phone number (at least 10 digits).'
   if (!values.service) errors.service = 'Pick the service you need.'
   if (!values.message?.trim() || values.message.trim().length < 10) errors.message = 'A sentence or two about your project helps.'
   else if (values.message.length > 1500) errors.message = 'Keep it under 1500 characters.'

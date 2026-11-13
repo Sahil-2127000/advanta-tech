@@ -1,6 +1,6 @@
 /**
  * Central business configuration.
- * Contact details below are SAMPLE / PLACEHOLDER values — replace before launch.
+ * Office hours are still sample values — confirm before launch.
  */
 export const site = {
   name: 'Advanta Tech',
@@ -9,14 +9,14 @@ export const site = {
     'Advanta Tech is a digital growth and software quality studio: SEO, paid media, social, web and e-commerce development, branding, plus manual, automation, API and performance testing.',
 
   contact: {
-    phoneDisplay: '+00 000 000 0000', // placeholder
-    phoneHref: 'tel:+000000000000',
-    email: 'hello@advantatech.example',
-    address: ['00 Business Park Road', 'Sector 00', 'Your City 000000'],
+    phoneDisplay: '+91 98884 44290',
+    phoneHref: 'tel:+919888444290',
+    email: 'hello@advantatech.co',
+    address: ['Plot No. C-205, Phase 8B, Industrial Area', 'Sector 74, Sahibzada Ajit Singh Nagar', 'Punjab 140307'],
   },
 
-  // International format, digits only (no +, spaces or dashes). Placeholder.
-  whatsappNumber: '000000000000',
+  // International format, digits only (no +, spaces or dashes). Same as the mobile number.
+  whatsappNumber: '919888444290',
   whatsappMessage: "Hi Advanta Tech, I'd like to discuss a project.",
 
   hours: [
@@ -26,10 +26,8 @@ export const site = {
   ],
 
   socials: [
-    { label: 'LinkedIn', href: 'https://linkedin.com/' },
-    { label: 'Instagram', href: 'https://instagram.com/' },
-    { label: 'X / Twitter', href: 'https://x.com/' },
-    { label: 'YouTube', href: 'https://youtube.com/' },
+    { label: 'LinkedIn', href: 'https://www.linkedin.com/company/advantatech/' },
+    { label: 'Instagram', href: 'https://www.instagram.com/advantatech/' },
   ],
 }
 
