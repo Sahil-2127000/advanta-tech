@@ -1,13 +1,20 @@
 /**
  * Enquiry submission — the single integration point for every form on the site.
  *
- * Set VITE_ENQUIRY_ENDPOINT (see .env.example) to any endpoint that accepts JSON
- * via POST (Formspree, Basin, your own API…). Without it, forms run in demo mode:
- * nothing is sent and the UI says so honestly.
+ * Set VITE_ENQUIRY_ENDPOINT (see .env.example) to the Google Apps Script web app URL
+ * (google-apps-script/Code.gs saves each enquiry as a row in a Google Sheet), or to any
+ * endpoint that accepts JSON via POST. Without it, forms run in demo mode: nothing is sent
+ * and the UI says so honestly.
  */
+import { getService } from '../data/services'
+
 const ENDPOINT = import.meta.env.VITE_ENQUIRY_ENDPOINT
 
 export const isDemoMode = !ENDPOINT
+
+// Apps Script web apps can't answer a CORS preflight, so they get a "simple" text/plain request
+// (the body is still JSON). Everything else gets a normal JSON request.
+const isAppsScript = ENDPOINT?.startsWith('https://script.google.com/')
 
 /** Only these fields ever leave the browser, trimmed and length-capped. */
 export const LIMITS = { name: 100, email: 254, phone: 20, company: 120, service: 60, budget: 40, message: 1500 }
@@ -27,12 +34,21 @@ export async function submitEnquiry(values) {
     await new Promise((r) => setTimeout(r, 700))
     return { ok: true, demo: true }
   }
+  const body = JSON.stringify({
+    ...payload,
+    serviceName: getService(payload.service)?.name ?? (payload.service === 'not-sure' ? 'Not sure — advise me' : payload.service),
+    page: window.location.pathname,
+    submittedAt: new Date().toISOString(),
+  })
   const res = await fetch(ENDPOINT, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-    body: JSON.stringify({ ...payload, submittedAt: new Date().toISOString() }),
+    headers: isAppsScript ? { 'Content-Type': 'text/plain;charset=utf-8' } : { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body,
   })
   if (!res.ok) throw new Error(`Request failed (${res.status})`)
+  // The Apps Script always answers 200 and puts the outcome in the JSON body.
+  const reply = await res.json().catch(() => ({ ok: true }))
+  if (reply.ok === false) throw new Error(reply.error || 'The enquiry could not be saved.')
   return { ok: true, demo: false }
 }
 

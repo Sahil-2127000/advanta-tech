@@ -52,3 +52,25 @@ endpoint that accepts JSON `POST`. Without it the form runs in demo mode and say
 - `npm audit`: 0 known vulnerabilities. No secrets in the repo; `.env` is git-ignored.
 - **Security headers** (CSP, HSTS, nosniff, frame blocking, referrer and permissions policy) live in `security-headers.js`. The build writes them to `dist/_headers` (Netlify, Cloudflare Pages); `vercel.json` carries the same set for Vercel; `npm run preview` serves with them so you can test locally.
 - **Enquiry form:** only whitelisted fields are sent, each trimmed and length-capped; inputs have `maxLength`; a hidden honeypot field silently drops bot submissions; double submits are ignored. Always validate again on whatever server receives the form.
+
+## Enquiries to Google Sheets
+
+Every contact-form submission can be saved as a row in a Google Sheet — no server needed. The script is in [`google-apps-script/Code.gs`](google-apps-script/Code.gs).
+
+1. **Create the sheet.** Go to [sheets.new](https://sheets.new) and name it, e.g. "Advanta Tech Enquiries". You don't need to add headers; the script creates them.
+2. **Add the script.** In the sheet: **Extensions → Apps Script**. Delete what's in `Code.gs`, paste the whole of `google-apps-script/Code.gs`, and click **Save**.
+   - Optional: change `NOTIFY_EMAIL` at the top (default `hello@advantatech.co`) or set it to `''` to turn off email alerts.
+3. **Deploy.** Click **Deploy → New deployment** → gear icon → **Web app**.
+   - Description: `Enquiry form`
+   - Execute as: **Me**
+   - Who has access: **Anyone**
+   - Click **Deploy**, then **Authorize access** and allow it (Google shows an "unverified app" warning for your own scripts: **Advanced → Go to … (unsafe)** — it's your script).
+4. **Copy the Web app URL** (it ends in `/exec`). Opening it in a browser should show `{"ok":true,"service":"Advanta Tech enquiries"}`.
+5. **Connect the website.** Set `VITE_ENQUIRY_ENDPOINT` to that URL:
+   - locally: create `.env` with `VITE_ENQUIRY_ENDPOINT=https://script.google.com/macros/s/…/exec`
+   - on your host (Vercel / Netlify / Cloudflare Pages): add it as an environment variable, then redeploy — the value is built into the site.
+6. **Test** by sending an enquiry from the contact page; a row appears in the **Enquiries** tab within a couple of seconds.
+
+**If you edit the script later**, publish the change with **Deploy → Manage deployments → ✏️ Edit → Version: New version → Deploy**. The URL stays the same.
+
+What the script does: validates the fields again, ignores honeypot (bot) submissions, stores text starting with `= + - @` as plain text so nobody can inject spreadsheet formulas, caps intake at 30 enquiries per 10 minutes, and emails each new enquiry with Reply-To set to the customer.
