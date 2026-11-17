@@ -10,8 +10,9 @@
 
 // ── Settings ───────────────────────────────────────────────────────────────
 const SHEET_NAME = 'Enquiries';
-// Who gets an email for each new enquiry. Set to '' to turn notifications off.
-const NOTIFY_EMAIL = 'hello@advantatech.co';
+// Who gets an email for each new enquiry — put your inbox here after pasting the script.
+// Leave as '' to turn notifications off.
+const NOTIFY_EMAIL = '';
 // Safety cap against floods of spam: at most this many rows per 10 minutes.
 const MAX_PER_10_MIN = 30;
 

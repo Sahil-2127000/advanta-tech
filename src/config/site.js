@@ -1,7 +1,40 @@
 /**
  * Central business configuration.
- * Business details shown across the site and given to search engines.
+ *
+ * Contact details (email, phone, WhatsApp, address) are NOT stored in the code: they come from
+ * VITE_* environment variables — `.env` locally (git-ignored), or the hosting provider's
+ * environment settings in production. See `.env.example` for the full list.
+ * Note: anything shown on the website still ends up in the built pages; env vars keep it out of
+ * the source code and the git repository.
  */
+
+// Works in the browser bundle (import.meta.env) and when vite.config.js loads this file in Node (process.env).
+const env = { ...(globalThis.process?.env ?? {}), ...(import.meta.env ?? {}) }
+const read = (key) => String(env[key] ?? '').trim()
+
+/** Required variables; the production build stops if any is missing. */
+export const REQUIRED_ENV = [
+  'VITE_CONTACT_EMAIL',
+  'VITE_CONTACT_PHONE',
+  'VITE_ADDRESS_STREET',
+  'VITE_ADDRESS_AREA',
+  'VITE_ADDRESS_CITY',
+  'VITE_ADDRESS_REGION',
+  'VITE_ADDRESS_POSTCODE',
+]
+export const missingEnv = () => REQUIRED_ENV.filter((k) => !read(k))
+
+const phone = read('VITE_CONTACT_PHONE').replace(/[^\d+]/g, '') // e.g. +919876543210
+const phoneDisplay = /^\+91\d{10}$/.test(phone) ? `+91 ${phone.slice(3, 8)} ${phone.slice(8)}` : phone
+const email = read('VITE_CONTACT_EMAIL')
+const address = {
+  street: read('VITE_ADDRESS_STREET'),
+  area: read('VITE_ADDRESS_AREA'),
+  city: read('VITE_ADDRESS_CITY'),
+  region: read('VITE_ADDRESS_REGION'),
+  postcode: read('VITE_ADDRESS_POSTCODE'),
+}
+
 export const site = {
   name: 'Advanta Tech',
   // Production domain — used for canonical URLs, the sitemap and social previews. No trailing slash.
@@ -11,25 +44,25 @@ export const site = {
     'Advanta Tech is a digital growth and software quality studio: SEO, paid media, social, web and e-commerce development, branding, plus manual, automation, API and performance testing.',
 
   contact: {
-    phoneDisplay: '+91 98884 44290',
-    phoneHref: 'tel:+919888444290',
-    email: 'hello@advantatech.co',
-    address: ['Plot No. C-205, Phase 8B, Industrial Area', 'Sector 74, Sahibzada Ajit Singh Nagar', 'Punjab 140307'],
+    phoneDisplay,
+    phoneHref: `tel:${phone}`,
+    email,
+    address: [address.street, [address.area, address.city].filter(Boolean).join(', '), `${address.region} ${address.postcode}`.trim()].filter(Boolean),
     // Same address, structured for search engines (schema.org PostalAddress)
     postal: {
-      streetAddress: 'Plot No. C-205, Phase 8B, Industrial Area, Sector 74',
-      addressLocality: 'Sahibzada Ajit Singh Nagar (Mohali)',
-      addressRegion: 'Punjab',
-      postalCode: '140307',
+      streetAddress: [address.street, address.area].filter(Boolean).join(', '),
+      addressLocality: address.city,
+      addressRegion: address.region,
+      postalCode: address.postcode,
       addressCountry: 'IN',
     },
   },
 
-  // Inbox that receives website enquiries (as formatted emails)
-  enquiryInbox: 'hello@advantatech.co',
+  // Inbox that receives website enquiries (as formatted emails). Defaults to the contact email.
+  enquiryInbox: read('VITE_ENQUIRY_INBOX') || email,
 
-  // International format, digits only (no +, spaces or dashes). Same as the mobile number.
-  whatsappNumber: '919888444290',
+  // International format, digits only. Defaults to the contact phone.
+  whatsappNumber: (read('VITE_WHATSAPP_NUMBER') || phone).replace(/\D/g, ''),
   whatsappMessage: "Hi Advanta Tech, I'd like to discuss a project.",
 
   hours: [

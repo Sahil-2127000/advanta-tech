@@ -30,7 +30,8 @@ npm run lint
 
 ## Editing content
 
-- `src/config/site.js` — phone, email, address, WhatsApp number, hours, social links
+- `.env` (copy from `.env.example`, git-ignored) — email, phone, WhatsApp number, address, enquiry inbox. **Set the same variables in your hosting provider** — the production build stops with a clear message if any required one is missing.
+- `src/config/site.js` — hours, social links, domain
 - `src/data/services.js` — all 19 services: copy, deliverables, outcomes, tools
 - `src/data/content.js` — stats, process, principles, industries, FAQ
 
@@ -55,13 +56,13 @@ endpoint that accepts JSON `POST`. Without it the form runs in demo mode and say
 
 ## Enquiries by email (default)
 
-Every contact-form submission is emailed to `enquiryInbox` in `src/config/site.js` (`hello@advantatech.co`) through [FormSubmit](https://formsubmit.co) — free, no backend, no account.
+Every contact-form submission is emailed to the inbox in `VITE_ENQUIRY_INBOX` (defaults to `VITE_CONTACT_EMAIL`) through [FormSubmit](https://formsubmit.co) — free, no backend, no account.
 
 - **The email:** subject `New enquiry: <name> — <service>`, the answers laid out as a table (name, email, phone, company, service, budget, message, page, time in IST), and **Reply** goes straight to the customer.
 - **The customer** gets an automatic confirmation email from FormSubmit.
-- **One-time activation:** the first enquiry sent from the live site makes FormSubmit email `hello@advantatech.co` an **"Activate Form"** link. Click it once; until then, submissions show a "needs Activation" error. That first enquiry is not delivered, so send a test enquiry yourself right after going live.
+- **One-time activation:** the first enquiry sent from the live site makes FormSubmit email that inbox an **"Activate Form"** link. Click it once; until then, submissions show a "needs Activation" error. That first enquiry is not delivered, so send a test enquiry yourself right after going live.
 - **Optional, after activation:** FormSubmit also emails a random alias (like `https://formsubmit.co/ajax/a1b2c3…`). Setting `VITE_ENQUIRY_ENDPOINT` to that URL hides the inbox address from the site's code.
-- **Changing the inbox:** edit `enquiryInbox`, rebuild, and activate again for the new address.
+- **Changing the inbox:** change `VITE_ENQUIRY_INBOX`, rebuild, and activate again for the new address.
 
 ## Enquiries to Google Sheets (optional)
 
@@ -69,7 +70,7 @@ Every contact-form submission can be saved as a row in a Google Sheet — no ser
 
 1. **Create the sheet.** Go to [sheets.new](https://sheets.new) and name it, e.g. "Advanta Tech Enquiries". You don't need to add headers; the script creates them.
 2. **Add the script.** In the sheet: **Extensions → Apps Script**. Delete what's in `Code.gs`, paste the whole of `google-apps-script/Code.gs`, and click **Save**.
-   - Optional: change `NOTIFY_EMAIL` at the top (default `hello@advantatech.co`) or set it to `''` to turn off email alerts.
+   - Optional: change `NOTIFY_EMAIL` at the top to your inbox to get an email for each enquiry (empty = no emails).
 3. **Deploy.** Click **Deploy → New deployment** → gear icon → **Web app**.
    - Description: `Enquiry form`
    - Execute as: **Me**
