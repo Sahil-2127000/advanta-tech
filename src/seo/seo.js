@@ -5,7 +5,7 @@
  */
 import { site } from '../config/site.js'
 import { practices, services, getService } from '../data/services.js'
-import { faqs } from '../data/content.js'
+import { faqs, process as steps } from '../data/content.js'
 
 const ORG_ID = `${site.url}/#organization`
 const SITE_ID = `${site.url}/#website`
@@ -19,6 +19,7 @@ const clip = (text, max = 158) => {
 
 const breadcrumb = (items) => ({
   '@type': 'BreadcrumbList',
+  '@id': `${absolute(items[items.length - 1][1])}#breadcrumb`,
   itemListElement: items.map(([name, path], i) => ({ '@type': 'ListItem', position: i + 1, name, item: absolute(path) })),
 })
 
@@ -66,16 +67,38 @@ export function organizationSchema() {
   ]
 }
 
-const page = ({ path, title, description, type = 'website', schema = [], noindex = false }) => ({
-  path,
-  title,
-  description: clip(description),
-  url: absolute(path),
-  image: absolute('/og-image.png'),
-  type,
-  noindex,
-  schema: [...organizationSchema(), ...schema],
-})
+/**
+ * Every page gets: the business + website nodes, a WebPage node (of `pageType`) describing the
+ * page itself, a BreadcrumbList when `crumbs` are given, and any page-specific `schema` nodes.
+ */
+const page = ({ path, title, description, type = 'website', pageType = 'WebPage', crumbs, mainEntity, schema = [], noindex = false }) => {
+  const url = absolute(path)
+  const desc = clip(description)
+  const webPage = {
+    '@type': pageType,
+    '@id': `${url}#webpage`,
+    url,
+    name: title,
+    description: desc,
+    inLanguage: 'en-IN',
+    isPartOf: { '@id': SITE_ID },
+    about: { '@id': ORG_ID },
+    publisher: { '@id': ORG_ID },
+    primaryImageOfPage: { '@type': 'ImageObject', url: absolute('/og-image.png'), width: 1200, height: 630 },
+    ...(crumbs ? { breadcrumb: { '@id': `${url}#breadcrumb` } } : {}),
+    ...(mainEntity ? { mainEntity } : {}),
+  }
+  return {
+    path,
+    title,
+    description: desc,
+    url,
+    image: absolute('/og-image.png'),
+    type,
+    noindex,
+    schema: [...organizationSchema(), webPage, ...(crumbs ? [breadcrumb(crumbs)] : []), ...schema],
+  }
+}
 
 const notFound = (path) =>
   page({ path, title: `Page not found | ${site.name}`, description: 'This page does not exist.', noindex: true })
@@ -93,6 +116,8 @@ export function routeMeta(pathname) {
       schema: [
         {
           '@type': 'FAQPage',
+          '@id': `${absolute('/')}#faq`,
+          isPartOf: { '@id': `${absolute('/')}#webpage` },
           mainEntity: faqs.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
         },
       ],
@@ -105,10 +130,13 @@ export function routeMeta(pathname) {
       title: `Digital Marketing & QA Testing Services | ${site.name}`,
       description:
         '19 specialist services: SEO, social media marketing, PPC, web design & development, e-commerce, content, branding, video, email & WhatsApp marketing, plus manual, automation, API, performance and mobile testing.',
+      pageType: 'CollectionPage',
+      crumbs: [['Home', '/'], ['Services', '/services']],
+      mainEntity: { '@id': `${absolute('/services')}#list` },
       schema: [
-        breadcrumb([['Home', '/'], ['Services', '/services']]),
         {
           '@type': 'ItemList',
+          '@id': `${absolute('/services')}#list`,
           name: `${site.name} services`,
           itemListElement: services.map((s, i) => ({ '@type': 'ListItem', position: i + 1, name: s.name, url: absolute(`/services/${s.slug}`) })),
         },
@@ -125,10 +153,12 @@ export function routeMeta(pathname) {
       path,
       title: `${s.name} Services | ${site.name}`,
       description: `${s.summary} ${s.intro}`,
+      crumbs: [['Home', '/'], ['Services', '/services'], [s.name, path]],
+      mainEntity: { '@id': `${absolute(path)}#service` },
       schema: [
-        breadcrumb([['Home', '/'], ['Services', '/services'], [s.name, path]]),
         {
           '@type': 'Service',
+          '@id': `${absolute(path)}#service`,
           name: s.name,
           serviceType: s.name,
           category: practice.title,
@@ -136,6 +166,7 @@ export function routeMeta(pathname) {
           url: absolute(path),
           provider: { '@id': ORG_ID },
           areaServed: [{ '@type': 'Country', name: 'India' }, 'Worldwide'],
+          audience: { '@type': 'BusinessAudience', name: 'Startups, SMEs and enterprises' },
           hasOfferCatalog: {
             '@type': 'OfferCatalog',
             name: `${s.name} deliverables`,
@@ -152,7 +183,9 @@ export function routeMeta(pathname) {
       title: `About Us | ${site.name} — Marketing Meets Engineering`,
       description:
         'Advanta Tech brings digital marketing and software quality assurance together in one accountable team, based in Mohali, Punjab and working with brands across India and worldwide.',
-      schema: [breadcrumb([['Home', '/'], ['About', '/about']]), { '@type': 'AboutPage', about: { '@id': ORG_ID }, url: absolute(path) }],
+      pageType: 'AboutPage',
+      crumbs: [['Home', '/'], ['About', '/about']],
+      mainEntity: { '@id': ORG_ID },
     })
   }
 
@@ -162,7 +195,23 @@ export function routeMeta(pathname) {
       title: `Our Process | ${site.name}`,
       description:
         'How Advanta Tech works: discover, strategise, execute and optimise — with flexible project, retainer and dedicated-team engagement models.',
-      schema: [breadcrumb([['Home', '/'], ['Process', '/process']])],
+      crumbs: [['Home', '/'], ['Process', '/process']],
+      mainEntity: { '@id': `${absolute(path)}#howto` },
+      schema: [
+        {
+          '@type': 'HowTo',
+          '@id': `${absolute(path)}#howto`,
+          name: `How ${site.name} delivers a project`,
+          description: 'Four steps from first conversation to compounding results.',
+          step: steps.map((st, i) => ({
+            '@type': 'HowToStep',
+            position: i + 1,
+            name: st.title,
+            text: st.text,
+            itemListElement: st.points.map((pt) => ({ '@type': 'HowToDirection', text: pt })),
+          })),
+        },
+      ],
     })
   }
 
@@ -171,7 +220,9 @@ export function routeMeta(pathname) {
       path,
       title: `Contact ${site.name} | Mohali, Punjab`,
       description: `Start a project with Advanta Tech. Call ${site.contact.phoneDisplay}, email ${site.contact.email} or send an enquiry — free discovery call and a written proposal within one working day.`,
-      schema: [breadcrumb([['Home', '/'], ['Contact', '/contact']]), { '@type': 'ContactPage', about: { '@id': ORG_ID }, url: absolute(path) }],
+      pageType: 'ContactPage',
+      crumbs: [['Home', '/'], ['Contact', '/contact']],
+      mainEntity: { '@id': ORG_ID },
     })
   }
 
