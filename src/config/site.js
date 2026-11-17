@@ -25,6 +25,9 @@ export const site = {
     },
   },
 
+  // Inbox that receives website enquiries (as formatted emails)
+  enquiryInbox: 'hello@advantatech.co',
+
   // International format, digits only (no +, spaces or dashes). Same as the mobile number.
   whatsappNumber: '919888444290',
   whatsappMessage: "Hi Advanta Tech, I'd like to discuss a project.",

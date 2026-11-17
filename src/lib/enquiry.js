@@ -1,20 +1,22 @@
 /**
  * Enquiry submission — the single integration point for every form on the site.
  *
- * Set VITE_ENQUIRY_ENDPOINT (see .env.example) to the Google Apps Script web app URL
- * (google-apps-script/Code.gs saves each enquiry as a row in a Google Sheet), or to any
- * endpoint that accepts JSON via POST. Without it, forms run in demo mode: nothing is sent
- * and the UI says so honestly.
+ * By default each enquiry is emailed to the business inbox as a formatted table through
+ * FormSubmit (https://formsubmit.co) — no backend or account needed. The very first
+ * submission triggers a one-time activation email to that inbox; click "Activate Form" in it.
+ *
+ * VITE_ENQUIRY_ENDPOINT can point somewhere else instead: the Google Apps Script web app in
+ * google-apps-script/Code.gs (saves rows to a Google Sheet) or any endpoint accepting JSON.
  */
 import { getService } from '../data/services'
+import { site } from '../config/site'
 
-const ENDPOINT = import.meta.env.VITE_ENQUIRY_ENDPOINT
+const ENDPOINT = import.meta.env.VITE_ENQUIRY_ENDPOINT || `https://formsubmit.co/ajax/${site.enquiryInbox}`
 
-export const isDemoMode = !ENDPOINT
-
+const isFormSubmit = ENDPOINT.startsWith('https://formsubmit.co/')
 // Apps Script web apps can't answer a CORS preflight, so they get a "simple" text/plain request
-// (the body is still JSON). Everything else gets a normal JSON request.
-const isAppsScript = ENDPOINT?.startsWith('https://script.google.com/')
+// (the body is still JSON).
+const isAppsScript = ENDPOINT.startsWith('https://script.google.com/')
 
 /** Only these fields ever leave the browser, trimmed and length-capped. */
 export const LIMITS = { name: 100, email: 254, phone: 20, company: 120, service: 60, budget: 40, message: 1500 }
@@ -23,33 +25,52 @@ export function cleanEnquiry(values) {
   return Object.fromEntries(Object.entries(LIMITS).map(([k, max]) => [k, String(values[k] ?? '').trim().slice(0, max)]))
 }
 
+const serviceLabel = (slug) => getService(slug)?.name ?? (slug === 'not-sure' ? 'Not sure — advise me' : slug)
+
+/** The email: subject line, a table of the answers, Reply-To set to the customer, and an auto-reply to them. */
+function formSubmitBody(d) {
+  const service = serviceLabel(d.service)
+  return {
+    _subject: `New enquiry: ${d.name} — ${service}`,
+    _template: 'table',
+    _captcha: 'false',
+    _replyto: d.email,
+    _autoresponse: `Thanks for contacting ${site.name}! We have received your enquiry about ${service} and will get back to you within one working day. For anything urgent, call or WhatsApp us on ${site.contact.phoneDisplay}.`,
+    Name: d.name,
+    email: d.email,
+    Phone: d.phone,
+    Company: d.company || '—',
+    Service: service,
+    Budget: d.budget || '—',
+    Message: d.message,
+    'Sent from': window.location.href,
+    'Submitted at': new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', dateStyle: 'medium', timeStyle: 'short' }) + ' IST',
+  }
+}
+
 /**
  * `website` is a honeypot: the field is invisible to people, so anything typed into it came from a bot.
  * Bots get a normal-looking success response and nothing is sent.
  */
 export async function submitEnquiry(values) {
-  if (values.website) return { ok: true, demo: false }
+  if (values.website) return { ok: true }
   const payload = cleanEnquiry(values)
-  if (!ENDPOINT) {
-    await new Promise((r) => setTimeout(r, 700))
-    return { ok: true, demo: true }
-  }
-  const body = JSON.stringify({
-    ...payload,
-    serviceName: getService(payload.service)?.name ?? (payload.service === 'not-sure' ? 'Not sure — advise me' : payload.service),
-    page: window.location.pathname,
-    submittedAt: new Date().toISOString(),
-  })
+  const body = isFormSubmit
+    ? formSubmitBody(payload)
+    : { ...payload, serviceName: serviceLabel(payload.service), page: window.location.pathname, submittedAt: new Date().toISOString() }
+
   const res = await fetch(ENDPOINT, {
     method: 'POST',
     headers: isAppsScript ? { 'Content-Type': 'text/plain;charset=utf-8' } : { 'Content-Type': 'application/json', Accept: 'application/json' },
-    body,
+    body: JSON.stringify(body),
   })
   if (!res.ok) throw new Error(`Request failed (${res.status})`)
-  // The Apps Script always answers 200 and puts the outcome in the JSON body.
-  const reply = await res.json().catch(() => ({ ok: true }))
-  if (reply.ok === false) throw new Error(reply.error || 'The enquiry could not be saved.')
-  return { ok: true, demo: false }
+  // FormSubmit answers { success: "true" | "false", message }, the Apps Script { ok, error }.
+  const reply = await res.json().catch(() => ({}))
+  if (reply.ok === false || reply.success === false || reply.success === 'false') {
+    throw new Error(reply.error || reply.message || 'The enquiry could not be sent.')
+  }
+  return { ok: true }
 }
 
 export function validateEnquiry(values) {

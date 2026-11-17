@@ -53,7 +53,17 @@ endpoint that accepts JSON `POST`. Without it the form runs in demo mode and say
 - **Security headers** (CSP, HSTS, nosniff, frame blocking, referrer and permissions policy) live in `security-headers.js`. The build writes them to `dist/_headers` (Netlify, Cloudflare Pages); `vercel.json` carries the same set for Vercel; `npm run preview` serves with them so you can test locally.
 - **Enquiry form:** only whitelisted fields are sent, each trimmed and length-capped; inputs have `maxLength`; a hidden honeypot field silently drops bot submissions; double submits are ignored. Always validate again on whatever server receives the form.
 
-## Enquiries to Google Sheets
+## Enquiries by email (default)
+
+Every contact-form submission is emailed to `enquiryInbox` in `src/config/site.js` (`hello@advantatech.co`) through [FormSubmit](https://formsubmit.co) — free, no backend, no account.
+
+- **The email:** subject `New enquiry: <name> — <service>`, the answers laid out as a table (name, email, phone, company, service, budget, message, page, time in IST), and **Reply** goes straight to the customer.
+- **The customer** gets an automatic confirmation email from FormSubmit.
+- **One-time activation:** the first enquiry sent from the live site makes FormSubmit email `hello@advantatech.co` an **"Activate Form"** link. Click it once; until then, submissions show a "needs Activation" error. That first enquiry is not delivered, so send a test enquiry yourself right after going live.
+- **Optional, after activation:** FormSubmit also emails a random alias (like `https://formsubmit.co/ajax/a1b2c3…`). Setting `VITE_ENQUIRY_ENDPOINT` to that URL hides the inbox address from the site's code.
+- **Changing the inbox:** edit `enquiryInbox`, rebuild, and activate again for the new address.
+
+## Enquiries to Google Sheets (optional)
 
 Every contact-form submission can be saved as a row in a Google Sheet — no server needed. The script is in [`google-apps-script/Code.gs`](google-apps-script/Code.gs).
 

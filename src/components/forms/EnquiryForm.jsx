@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { AlertCircle, Check, Loader2 } from 'lucide-react'
 import Button from '../ui/Button'
 import { practices, services } from '../../data/services'
-import { isDemoMode, LIMITS, submitEnquiry, validateEnquiry } from '../../lib/enquiry'
+import { LIMITS, submitEnquiry, validateEnquiry } from '../../lib/enquiry'
 import { whatsappLink } from '../../config/site'
 
 const budgets = ['Not sure yet', 'Under $1k / month', '$1k — $5k / month', '$5k — $15k / month', '$15k+ / month', 'One-off project']
@@ -79,12 +79,10 @@ export default function EnquiryForm({ defaultService = '' }) {
     return (
       <motion.div role="status" className="glass p-8 sm:p-10" initial={{ opacity: 0, y: 20, rotateX: 8 }} animate={{ opacity: 1, y: 0, rotateX: 0 }} style={{ transformPerspective: 900 }}>
         <span className="grid h-12 w-12 place-items-center rounded-xl bg-brand text-white"><Check className="h-6 w-6" aria-hidden /></span>
-        <h3 className="display mt-6 text-4xl sm:text-5xl">Enquiry {result?.demo ? 'captured' : 'received'}.</h3>
+        <h3 className="display mt-6 text-4xl sm:text-5xl">Enquiry received.</h3>
         <p className="mt-4 max-w-md leading-relaxed text-bone/70">
           Thanks, {values.name.split(' ')[0]}.{' '}
-          {result?.demo
-            ? 'This site is running in demo mode, so nothing was transmitted. Message us on WhatsApp to reach the team directly.'
-            : `We'll be in touch about ${serviceName ?? 'your project'} within one working day.`}
+          {`We'll be in touch about ${serviceName ?? 'your project'} within one working day. A confirmation is on its way to ${values.email}.`}
         </p>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <Button href={whatsappLink(`Hi Advanta Tech, I'm ${values.name}.${serviceName ? ` I'm interested in ${serviceName}.` : ''} ${values.message}`.trim())}>Continue on WhatsApp</Button>
@@ -145,7 +143,6 @@ export default function EnquiryForm({ defaultService = '' }) {
         <Button type="submit" disabled={status === 'sending'} icon={status !== 'sending'}>
           {status === 'sending' ? <span className="inline-flex items-center gap-2"><Loader2 className="h-4 w-4 animate-spin" aria-hidden /> Sending</span> : 'Send enquiry'}
         </Button>
-        {isDemoMode && <p className="label text-[0.6rem] text-mute/80">Demo mode — no data is sent. See lib/enquiry.js</p>}
       </div>
       <AnimatePresence>
         {status === 'error' && (
